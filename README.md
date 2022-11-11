@@ -50,7 +50,7 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 
 To be successful and get the most of this section, you are encouraged to have the [Docker Runtime](https://docs.docker.com/docker-for-windows/install/) ready.
 <details>
-<summary>Expand to see instructions</summary>
+<summary>Expand for instructions</summary>
 
 1. Go to your organization and select **Organization settings**.
 
@@ -66,7 +66,7 @@ To be successful and get the most of this section, you are encouraged to have th
 
    ![ADO Organization Settings Add Agent pools](/images/ado-organization_settings_agent_pools-add.png)
 
-5. See the agent pool named **Docker**.
+5. See the agent pool **Docker**.
 
    ![ADO Agent Pool Docker](/images/ado-agent_pool-docker.png)
 
