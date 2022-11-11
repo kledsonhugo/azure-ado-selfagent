@@ -6,7 +6,6 @@ You can use self-hosted agents in Azure Pipelines.
 
 Self-hosted agents give you more control to install dependent software needed for your builds and deployments.
 
-
 <br><br>
 ## Sign up for [Azure Pipelines](https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/pipelines-sign-up?view=azure-devops)
 
@@ -42,8 +41,8 @@ In Azure Pipelines, pools are scoped to the entire organization, so you can shar
 
 This article describes how to [Create the Azure DevOps Agent](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml%2Cbrowser#create-agent-pools) (ADO) on different targets.
 
-- Docker
-- Kubernetes
+- [Self-hosted agents running on Docker](#self-hosted-agents-running-on-docker)
+- [Self-hosted agents running on Kubernetes](#self-hosted-agents-running-on-kubernetes)
 
 
 <br><br>
@@ -51,7 +50,7 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 
 To be successful and get the most of this section, you are encouraged to have the [Docker Runtime](https://docs.docker.com/docker-for-windows/install/) ready.
 <details>
-<summary>See instructions</summary>
+<summary>Expand to see instructions</summary>
 
 1. Go to your organization and select **Organization settings**.
 
@@ -65,15 +64,15 @@ To be successful and get the most of this section, you are encouraged to have th
 
 4. Select **Self-hosted** for **Pool type**, type **Docker** as the **Name** of the agent pool and select **Create**.
 
-   ![ADO Organization Settings Agent pools](/images/ado-organization_settings_agent_pools-add.png)
+   ![ADO Organization Settings Add Agent pools](/images/ado-organization_settings_agent_pools-add.png)
 
 5. See the agent pool named **Docker**.
 
-   ![ADO Organization Settings Agent pools](/images/ado-agent_pool-docker.png)
+   ![ADO Agent Pool Docker](/images/ado-agent_pool-docker.png)
 
 6. Create a directory of your choice and navigate into it.
 
-   ![ADO Organization Settings Agent pools](/images/ado-agent_pool-docker-dir.png)
+   ![Doker dir](/images/ado-agent_pool-docker-dir.png)
 
 7. Save the following content to file **```Dockerfile```**.
 
@@ -222,16 +221,27 @@ To be successful and get the most of this section, you are encouraged to have th
     adoagent-docker:latest
     ```
 
-    **Example**
-    ![ADO agent run](/images/ado-agent_pool-docker-run.png)
-
     > **Warning**
+
     > You need to control your ADO url and token using environment variables.
+
     > Command above is for example only.
 
-    > | Env Var   | Description |
-    > |----------:|---------------|
-    > | AZP_URL   | The URL of the Azure DevOps or Azure DevOps Server instance. |
-    > | AZP_TOKEN | [Personal Access Token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&amp%3Btabs=Windows&tabs=Windows) (PAT) with Agent Pools (read, manage) scope, created by a user who has permission to configure agents, at AZP_URL. |
+    | Env Var | Description |
+    |----------|---------------|
+    | `AZP_URL` | The URL of the Azure DevOps or Azure DevOps Server instance. |
+    | `AZP_TOKEN` | [Personal Access Token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&amp%3Btabs=Windows&tabs=Windows) (PAT) with Agent Pools (read, manage) scope, created by a user who has permission to configure agents, at AZP_URL. |
+
+17. See the container agent connected to the agent pool.
+
+    ![ADO agent listening](/images/ado-agent_pool-docker-run-listening.png)
+
+18. Go to your **Organization settings**, select **Agent pools** and select the **Docker** agent pool.
+
+19. You should now see your container agent connected.
+
+    ![ADO agent pool with connected agent](/images/ado-agent_pool-docker-connected_agent.png)
+
+20. You can start more container agents as needed.
 
 </details>
