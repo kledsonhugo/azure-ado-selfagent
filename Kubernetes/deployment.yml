@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adoagent-deployment
+spec:
+  selector:
+    matchLabels:
+      app: adoagent
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: adoagent
+    spec:
+      containers:
+      - name: adoagent
+        image: kledsonhugo/adoagent-kubernetes:latest
+        env:
+        - name: AZP_URL
+          value: https://dev.azure.com/csa-app-innovation
+        - name: AZP_TOKEN
+          value: p54zo6qaripbpyhobjy2vpccafi6jaz7ldvmvdg4uoe5gxrcdnla
+        - name: AZP_POOL
+          value: Kubernetes
