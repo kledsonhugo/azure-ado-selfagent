@@ -19,6 +19,6 @@ spec:
         - name: AZP_URL
           value: https://dev.azure.com/csa-app-innovation
         - name: AZP_TOKEN
-          value: p54zo6qaripbpyhobjy2vpccafi6jaz7ldvmvdg4uoe5gxrcdnla
+          value: XXXXXXXXXXXXXXXXXXXX
         - name: AZP_POOL
           value: Kubernetes
