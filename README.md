@@ -239,7 +239,7 @@ To be successful and get the most of this section, you are encouraged to have th
 
 18. Go to your **Organization settings**, select **Agent pools** and select **Docker**.
 
-19. You should now see your container agent connected in the **Agents** menu.
+19. You should now see your Kubernetes pods connected in the **Agents** menu.
 
     ![ADO agent pool with connected agent](/images/ado-agent_pool-docker-connected_agent.png)
 
