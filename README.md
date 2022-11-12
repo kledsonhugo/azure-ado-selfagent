@@ -45,7 +45,6 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 - [Self-hosted agents on Kubernetes](#self-hosted-agents-on-kubernetes)
 
 
-<br><br>
 ### Self-hosted agents on **Docker**
 
 To be successful and get the most of this section, you are encouraged to have the [Docker Runtime](https://docs.docker.com/docker-for-windows/install/) ready.
@@ -248,7 +247,6 @@ To be successful and get the most of this section, you are encouraged to have th
 </details>
 
 
-<br><br>
 ### Self-hosted agents on **Kubernetes**
 
 A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is required to perform this setion.
