@@ -514,4 +514,8 @@ Microsoft Learn allows [Create a build pipeline with Azure Pipelines](https://le
 
    ![ADO pipeline Success e-mail](/images/ado-pipeline-success_email.png)
 
-9. Congratulations !!! You could make an overview of Azure DevOps self-hosted agents on Kubernetes. Try configuring the same for all target self-hosted agent technologies described on this procedure.
+9. Congratulations !!!
+
+   You could make an overview of Azure DevOps self-hosted agents on Kubernetes.
+   
+   Try configuring the same for all target self-hosted agent technologies described on this procedure.
