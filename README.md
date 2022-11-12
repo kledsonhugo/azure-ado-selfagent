@@ -1,4 +1,4 @@
-# Azure DevOps Self-Agent
+# Azure DevOps Self-hosted agent
 
 An agent that you set up and manage on your own to run jobs is a self-hosted agent.
 
@@ -487,3 +487,33 @@ A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is requi
 
 17. You can scale the Kubernetes pods as needed.
 </details>
+
+
+<br><br>
+## Config project pipeline for Self-hosted agents
+
+Microsoft Learn allows [Create a build pipeline with Azure Pipelines](https://learn.microsoft.com/en-us/training/modules/create-a-build-pipeline/?view=azure-devops) for good understanding of Azure DevOps Pipelines.<br><br>
+
+1. Go to your organization and select a project.
+
+2. Select **Repos** in the left panel and ensure there is a branch. Visit [The pipeline default branch](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/pipeline-default-branch?view=azure-devops) in case of questions.
+
+3. Select **Pipelines** in the left panel and then **Create pipeline**.
+
+4. Select **Use the classic editor to create a pipeline without YAML** then **Continue**.
+
+5. Select **Empty pipeline** then **Apply**.
+
+6. Select **Kubernetes** for **Agent pool**, click the plus signal on **Agent job 1** and select **Command line**. In the **Triggers** menu, select **Enable continuous integration**, then click **Save & queue**.
+
+   ![ADO pipeline 1](/images/ado-pipeline-1.png)
+
+   ![ADO pipeline 2](/images/ado-pipeline-2.png)
+
+7. Type a comment and select **Save and run**.
+
+8. The pipeline should complete and you receive an e-mail.
+
+   ![ADO pipeline Success e-mail](/images/ado-pipeline-success_email.png)
+
+9. Congratulations !!! You could make an overview of Azure DevOps self-hosted agents on Kubernetes. Try configuring the same for all target self-hosted agent technologies described on this procedure.
