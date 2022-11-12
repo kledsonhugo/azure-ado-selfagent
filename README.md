@@ -492,7 +492,7 @@ A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is requi
 <br><br>
 ## Config project pipeline for Self-hosted agents
 
-Microsoft Learn allows [Create a build pipeline with Azure Pipelines](https://learn.microsoft.com/en-us/training/modules/create-a-build-pipeline/?view=azure-devops) for good understanding of Azure DevOps Pipelines.<br><br>
+Microsoft Learn allows [Create a build pipeline with Azure Pipelines](https://learn.microsoft.com/en-us/training/modules/create-a-build-pipeline/?view=azure-devops) for good understanding of Azure DevOps Pipelines. It is very recommended prior to proceed.<br><br>
 
 1. Go to your organization and select a project.
 
