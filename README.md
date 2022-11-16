@@ -445,7 +445,7 @@ A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is requi
 
    > **Warning**
 
-   > You need replace the var values for ```$AZP_URL``` and ```$AZP_TOKEN``` with your ADO url and token.
+   > You need replace values for vars ```AZP_URL``` and ```AZP_TOKEN``` with your ADO url and token.
 
    > Replace ```kledsonhugo``` by your Container Registry account.
 
@@ -501,7 +501,7 @@ Microsoft Learn allows [Create a build pipeline with Azure Pipelines](https://le
 
    ![ADO pipeline Success e-mail](/images/ado-pipeline-success_email.png)
 
-9. Congratulations !!!
+9. **Congratulations !!!**
 
    You could make an overview of Azure DevOps self-hosted agents on Kubernetes.
    
