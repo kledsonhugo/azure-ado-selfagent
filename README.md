@@ -754,7 +754,7 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 
 > **Note**
 
-> Microsoft Learn allows [Create a build pipeline with Azure Pipelines](https://learn.microsoft.com/en-us/training/modules/create-a-build-pipeline/?view=azure-devops) for good understanding of Azure DevOps Pipelines. It is very recommended prior to proceed.<br><br>
+> Microsoft Learn allows [Create a build pipeline with Azure Pipelines](https://learn.microsoft.com/en-us/training/modules/create-a-build-pipeline/?view=azure-devops) for good understanding of Azure DevOps Pipelines. It is very recommended prior to proceed.
 
 1. Go to your organization and select a project.
 
