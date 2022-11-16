@@ -49,10 +49,8 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 
 - [Self-hosted agents on Docker](#self-hosted-agents-on-docker)
 - [Self-hosted agents on Kubernetes](#self-hosted-agents-on-kubernetes)
-- [Self-hosted agents on AKS](#self-hosted-agents-on-aks)
+- [Self-hosted agents on AKS](#self-hosted-agents-on-aks)<br><br>
 
-
-<br><br>
 ### Self-hosted agents on **Docker**
 
 <details>
@@ -496,7 +494,6 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 
 </details>
 
-<br><br>
 ### Self-hosted agents on **AKS**
 
 <details>
