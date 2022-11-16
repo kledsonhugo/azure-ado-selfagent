@@ -4,6 +4,10 @@ An agent that you set up and manage on your own to run Azure DevOps pipeline job
 
 Self-hosted agents give you more control to install dependent software needed for your builds and deployments.
 
+- [Sign up for Azure Pipelines](#sign-up-for-azure-pipelines)
+- [Create and manage agent pools](#create-and-manage-agent-pools)
+- [Create project pipeline for Self-hosted agents](#create-project-pipeline-for-self-hosted-agents)
+
 <br><br>
 ## Sign up for [Azure Pipelines](https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/pipelines-sign-up?view=azure-devops)
 
