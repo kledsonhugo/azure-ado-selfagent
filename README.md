@@ -62,8 +62,6 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 
 > To be successful and get the most of this section, you are encouraged to have the [Docker Runtime](https://docs.docker.com/docker-for-windows/install/) ready.
 
-<br><br>
-
 1. Go to your organization and select **Organization settings**.
 
    ![ADO Organization Settings](/images/ado-organization_settings.png)
