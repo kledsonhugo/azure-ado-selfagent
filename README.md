@@ -1,15 +1,19 @@
 # Azure DevOps Self-hosted agents
 
-An agent that you set up and manage on your own to run jobs is a self-hosted agent.
-
-You can use self-hosted agents in Azure Pipelines.
+An agent that you set up and manage on your own to run Azure DevOps pipeline jobs.
 
 Self-hosted agents give you more control to install dependent software needed for your builds and deployments.
 
 <br><br>
 ## Sign up for [Azure Pipelines](https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/pipelines-sign-up?view=azure-devops)
 
-Sign up for an Azure DevOps organization and Azure Pipelines to begin managing CI/CD to deploy your code. <br><br>
+> **Note**
+
+> Sign up for an Azure DevOps organization to begin managing CI/CD to deploy your code.
+
+> If you have already an Azure DevOps organization, jump to [Create and manage agent pools](#create-and-manage-agent-pools)
+
+<br><br>
 
 1. Log into [Azure DevOps](https://dev.azure.com/) using your Microsoft account.
 
@@ -53,7 +57,11 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 <summary>Expand for instructions</summary>
 
 <br><br>
-To be successful and get the most of this section, you are encouraged to have the [Docker Runtime](https://docs.docker.com/docker-for-windows/install/) ready.
+
+> **Note**
+
+> To be successful and get the most of this section, you are encouraged to have the [Docker Runtime](https://docs.docker.com/docker-for-windows/install/) ready.
+
 <br><br>
 
 1. Go to your organization and select **Organization settings**.
@@ -72,7 +80,7 @@ To be successful and get the most of this section, you are encouraged to have th
 
 5. Create in your machine a directory of your choice and navigate into it.
 
-   > Picture for example only.
+   > Example only.
 
    ![Doker dir](/images/docker-local_dir.png)
 
@@ -229,9 +237,9 @@ To be successful and get the most of this section, you are encouraged to have th
 
    > **Warning**
 
-   > You need replace ```$AZP_URL``` and ```$AZP_TOKEN``` with your ADO url and token.
+   > Replace ```$AZP_URL``` and ```$AZP_TOKEN``` with your ADO url and token.
 
-   > Replace ```kledsonhugo``` by your Container Registry account.
+   > Also replace ```kledsonhugo``` by your Container Registry account.
 
    | Env Var | Description |
    |----------|---------------|
@@ -244,6 +252,8 @@ To be successful and get the most of this section, you are encouraged to have th
 
     ![ADO agent pool with connected agent](/images/docker-agents_connected.png)
 
+    > **Note**
+
     > You can run multiple containers in paralel as you want. In the picture there are 2 running as example.
 
 </details>
@@ -255,7 +265,11 @@ To be successful and get the most of this section, you are encouraged to have th
 <summary>Expand for instructions</summary>
 
 <br><br>
-A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is required to perform this setion.
+
+> **Note**
+
+> A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is required to perform this setion.
+
 <br><br>
 
 1. Go to your organization and select **Organization settings**.
@@ -274,7 +288,7 @@ A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is requi
 
 5. Create in your machine a directory of your choice and navigate into it.
 
-   > Picture for example only.
+   > Example only.
 
    ![Doker dir](/images/kubernetes-local_dir.png)
 
@@ -475,6 +489,8 @@ A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is requi
 
     ![ADO agent connected](/images/kubernetes-agents_connected.png)
 
+    > **Note**
+
     > You can run multiple pods as you want. In the picture there are 2 online as example only.
 
 </details>
@@ -486,7 +502,11 @@ A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is requi
 <summary>Expand for instructions</summary>
 
 <br><br>
-The [Azure Command-Line Interface (CLI)](https://learn.microsoft.com/en-us/cli/azure/what-is-azure-cli) is required to perform this section, unless you choose Azure Cloud Shell.
+
+> **Note**
+
+> The [Azure Command-Line Interface (CLI)](https://learn.microsoft.com/en-us/cli/azure/what-is-azure-cli) is required to perform this section, unless you choose Azure Cloud Shell.
+
 <br><br>
 
 1. Go to your organization and select **Organization settings**.
@@ -505,7 +525,7 @@ The [Azure Command-Line Interface (CLI)](https://learn.microsoft.com/en-us/cli/a
 
 5. Create in your machine a directory of your choice and navigate into it.
 
-   > Picture for example only.
+   > Example only.
 
    ![Doker dir](/images/aks-local_dir.png)
 
@@ -641,9 +661,13 @@ The [Azure Command-Line Interface (CLI)](https://learn.microsoft.com/en-us/cli/a
 
 8. Deploy and configure Azure Kubernetes Service (AKS).
 
+   > **Note**
+
    > Follow the steps in [Quickstart: Deploy an Azure Kubernetes Service (AKS) cluster](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal).
 
 9. Deploy and configure Azure Container Registry.
+
+   > **Note**
 
    > Follow the steps in [Quickstart: Create an Azure container registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal).
 
@@ -727,6 +751,8 @@ The [Azure Command-Line Interface (CLI)](https://learn.microsoft.com/en-us/cli/a
 
     ![ADO agent connected](/images/aks-agents_connected.png)
 
+    > **Note**
+
     > You can run multiple pods as you want. In the picture there are 2 online as example only.
 
 </details>
@@ -734,7 +760,9 @@ The [Azure Command-Line Interface (CLI)](https://learn.microsoft.com/en-us/cli/a
 <br><br>
 ## Create project pipeline for Self-hosted agents
 
-Microsoft Learn allows [Create a build pipeline with Azure Pipelines](https://learn.microsoft.com/en-us/training/modules/create-a-build-pipeline/?view=azure-devops) for good understanding of Azure DevOps Pipelines. It is very recommended prior to proceed.<br><br>
+> **Note**
+
+> Microsoft Learn allows [Create a build pipeline with Azure Pipelines](https://learn.microsoft.com/en-us/training/modules/create-a-build-pipeline/?view=azure-devops) for good understanding of Azure DevOps Pipelines. It is very recommended prior to proceed.<br><br>
 
 1. Go to your organization and select a project.
 
