@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adoagent-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: adoagent
+  template:
+    metadata:
+      labels:
+        app: adoagent
+    spec:
+      containers:
+      - name: adoagent
+        image: adoagentacr.azurecr.io/adoagent-aks:latest
+        env:
+        env:
+        - name: AZP_URL
+          value: https://dev.azure.com/csu-csa-appinnovation
+        - name: AZP_TOKEN
+          value: XXXXXXXXXXXXXXXXXXXXXXXXXX
+        - name: AZP_POOL
+          value: AKS-pool
