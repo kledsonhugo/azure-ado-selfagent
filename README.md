@@ -9,7 +9,7 @@ Self-hosted agents give you more control to install dependent software needed fo
 <br><br>
 ## Sign up for [Azure Pipelines](https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/pipelines-sign-up?view=azure-devops)
 
-Sign up for an Azure DevOps organization and Azure Pipelines to begin managing CI/CD to deploy your code.<br><br>
+Sign up for an Azure DevOps organization and Azure Pipelines to begin managing CI/CD to deploy your code. <br><br>
 
 1. Log into [Azure DevOps](https://dev.azure.com/) using your Microsoft account.
 
