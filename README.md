@@ -15,7 +15,7 @@ Self-hosted agents give you more control to install dependent software needed fo
 
 > Sign up for an Azure DevOps organization to begin managing CI/CD to deploy your code.
 
-> If you have already an Azure DevOps organization, jump to [Create and manage agent pools](#create-and-manage-agent-pools)
+> If you have already an Azure DevOps organization, jump to [Create and manage agent pools](#create-and-manage-agent-pools).
 
 1. Log into [Azure DevOps](https://dev.azure.com/) using your Microsoft account.
 
@@ -260,7 +260,6 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 
 </details>
 
-<br><br>
 ### Self-hosted agents on **Kubernetes**
 
 <details>
