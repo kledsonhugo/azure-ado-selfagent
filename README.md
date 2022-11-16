@@ -486,7 +486,7 @@ A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is requi
 <summary>Expand for instructions</summary>
 
 <br><br>
-The [Azure Command-Line Interface (CLI)](https://learn.microsoft.com/en-us/cli/azure/what-is-azure-cli) is required to perform this section.
+The [Azure Command-Line Interface (CLI)](https://learn.microsoft.com/en-us/cli/azure/what-is-azure-cli) is required to perform this section, unless you choose Azure Cloud Shell.
 <br><br>
 
 1. Go to your organization and select **Organization settings**.
