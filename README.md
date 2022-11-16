@@ -1,4 +1,4 @@
-# Azure DevOps Self-hosted agent
+# Azure DevOps Self-hosted agents
 
 An agent that you set up and manage on your own to run jobs is a self-hosted agent.
 
@@ -13,11 +13,11 @@ Sign up for an Azure DevOps organization and Azure Pipelines to begin managing C
 
 1. Log into your Microsoft account.
 
-   ![Microsoft Account](/images/microsoft_account.png)
+   <img src="./images/ado-microsoft_account.png" width="350">
 
 2. Enter a name for your organization, select a host location from the drop-down menu, enter the characters you see, and then select **Continue**.
 
-   ![Create ADO Organization](/images/ado-organization.png)
+   <img src="./images/ado-organization.png" width="350">
 
    > Use the following URL to sign in to your organization at any time: https://dev.azure.com/{yourorganization}
 
@@ -45,6 +45,7 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 - [Self-hosted agents on Kubernetes](#self-hosted-agents-on-kubernetes)
 
 
+<br><br>
 ### Self-hosted agents on **Docker**
 
 To be successful and get the most of this section, you are encouraged to have the [Docker Runtime](https://docs.docker.com/docker-for-windows/install/) ready.
@@ -54,27 +55,25 @@ To be successful and get the most of this section, you are encouraged to have th
 
 1. Go to your organization and select **Organization settings**.
 
-   ![ADO Organization Settings](/images/ado-organization_settings.png)
+   ![ADO Organization Settings](/images/docker-organization_settings.png)
 
 2. Select **Agent pools** in the left panel under **Pipelines**.
 
-   ![ADO Organization Settings Agent pools](/images/ado-organization_settings_agent_pools.png)
+   ![ADO Organization Settings Agent pools](/images/docker-organization_settings-agent_pools.png)
 
 3. Select **Add pool**.
 
-4. Select **Self-hosted** for **Pool type**, type **Docker** as the **Name** of the agent pool and select **Create**.
+4. Select **Self-hosted** for **Pool type**, type **Docker-pool** as the **Name** of the agent pool and select **Create**.
 
-   ![ADO Organization Settings Add Agent pools](/images/ado-organization_settings_agent_pools-add.png)
+   <img src="./images/docker-organization_settings-agent_pools-add.png" width="350">
 
-5. See the agent pool **Docker**.
+5. Create in your machine a directory of your choice and navigate into it.
 
-   ![ADO Agent Pool Docker](/images/ado-agent_pool-docker.png)
+   > Picture for example only.
 
-6. Create a directory of your choice and navigate into it.
+   ![Doker dir](/images/docker-local_dir.png)
 
-   ![Doker dir](/images/ado-agent_pool-docker-dir.png)
-
-7. Save the following content to file **```Dockerfile```**.
+6. Save the following content to file **```Dockerfile```**.
 
     ```
     FROM ubuntu:20.04
@@ -105,7 +104,7 @@ To be successful and get the most of this section, you are encouraged to have th
     ENTRYPOINT [ "./start.sh" ]
     ```
 
-8. Save the following content to file **```start.sh```**.
+7. Save the following content to file **```start.sh```**.
 
     ```
     #!/bin/bash
@@ -204,49 +203,49 @@ To be successful and get the most of this section, you are encouraged to have th
     ./run-docker.sh "$@" & wait $!
     ```
 
-9. Build the container with the ADO agent software.
+8. Build the container and push it into a Container Registry repository of your choice.
 
+   ```console
+   docker build -t kledsonhugo/adoagent:latest .
+   docker push kledsonhugo/adoagent:latest
+   ```
 
-    ```console
-    docker build -t adoagent-docker:latest .
-    ```
+   > **Warning**
 
-10. Run the container.
+   > Replace ```kledsonhugo``` by your Container Registry account.
 
-    ```console
-    docker run \
-    -e AZP_URL=$AZP_URL \
-    -e AZP_TOKEN=$AZP_TOKEN \
-    -e AZP_POOL=Docker \
-    adoagent-docker:latest
-    ```
+9. Run the container.
 
-    > **Warning**
+   ```console
+   docker run \
+   -e AZP_URL=$AZP_URL \
+   -e AZP_TOKEN=$AZP_TOKEN \
+   -e AZP_POOL=Docker-pool \
+   kledsonhugo/adoagent:latest
+   ```
 
-    > You need to control your ADO url and token using environment variables.
+   > **Warning**
 
-    > Command above is for example only. Replace with proper values.
+   > You need replace ```$AZP_URL``` and ```$AZP_TOKEN``` with your ADO url and token.
 
-    | Env Var | Description |
-    |----------|---------------|
-    | `AZP_URL` | The URL of the Azure DevOps or Azure DevOps Server instance. |
-    | `AZP_TOKEN` | [Personal Access Token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&amp%3Btabs=Windows&tabs=Windows) (PAT) with Agent Pools (read, manage) scope, created by a user who has permission to configure agents, at AZP_URL. |
+   > Replace ```kledsonhugo``` by your Container Registry account.
 
-17. Validate if the container agent is connected.
+   | Env Var | Description |
+   |----------|---------------|
+   | `AZP_URL` | The URL of the Azure DevOps or Azure DevOps Server instance. |
+   | `AZP_TOKEN` | [Personal Access Token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&amp%3Btabs=Windows&tabs=Windows) (PAT) with Agent Pools (read, manage) scope, created by a user who has permission to configure agents, at AZP_URL. |
 
-    ![ADO agent listening](/images/ado-agent_pool-docker-run-listening.png)
+10. Go to your **Organization settings**, select **Agent pools** and select **Docker-pool**.
 
-18. Go to your **Organization settings**, select **Agent pools** and select **Docker**.
+11. You should now see your Docker containers connected in the **Agents** menu.
 
-19. You should now see your Kubernetes pods connected in the **Agents** menu.
+    ![ADO agent pool with connected agent](/images/docker-agents_connected.png)
 
-    ![ADO agent pool with connected agent](/images/ado-agent_pool-docker-connected_agent.png)
-
-20. You can start more container agents as needed.
+    > You can run multiple containers in paralel as you want. In the picture there are 2 running as example.
 
 </details>
 
-
+<br><br>
 ### Self-hosted agents on **Kubernetes**
 
 A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is required to perform this setion.
@@ -256,27 +255,25 @@ A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is requi
 
 1. Go to your organization and select **Organization settings**.
 
-   ![ADO Organization Settings](/images/ado-organization_settings.png)
+   ![ADO Organization Settings](/images/docker-organization_settings.png)
 
 2. Select **Agent pools** in the left panel under **Pipelines**.
 
-   ![ADO Organization Settings Agent pools](/images/ado-organization_settings_agent_pools.png)
+   ![ADO Organization Settings Agent pools](/images/docker-organization_settings-agent_pools.png)
 
 3. Select **Add pool**.
 
-4. Select **Self-hosted** for **Pool type**, type **Kubernetes** as the **Name** of the agent pool and select **Create**.
+4. Select **Self-hosted** for **Pool type**, type **Kubernetes-pool** as the **Name** of the agent pool and select **Create**.
 
-   ![ADO Organization Settings Add Agent pools](/images/ado-organization_settings_agent_pools-add-kubernetes.png)
+   <img src="./images/kubernetes-organization_settings-agent_pools-add.png" width="350">
 
-5. See the agent pool **Kubernetes**.
+5. Create in your machine a directory of your choice and navigate into it.
 
-   ![ADO Agent Pool Docker](/images/ado-agent_pool-kubernetes.png)
+   > Picture for example only.
 
-6. Create a directory of your choice and navigate into it.
+   ![Doker dir](/images/kubernetes-local_dir.png)
 
-   ![Kubernetes dir](/images/ado-agent_pool-kubernetes-dir.png)
-
-7. Save the following content to file **```Dockerfile```**.
+6. Save the following content to file **```Dockerfile```**.
 
     ```
     FROM ubuntu:20.04
@@ -307,7 +304,7 @@ A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is requi
     ENTRYPOINT [ "./start.sh" ]
     ```
 
-8. Save the following content to file **```start.sh```**.
+7. Save the following content to file **```start.sh```**.
 
     ```
     #!/bin/bash
@@ -406,86 +403,76 @@ A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is requi
     ./run-docker.sh "$@" & wait $!
     ```
 
-9. Build the container with the ADO agent software.
+8. Build the container and push it into a Container Registry repository of your choice.
 
+   ```console
+   docker build -t kledsonhugo/adoagent:latest .
+   docker push kledsonhugo/adoagent:latest
+   ```
 
-    ```console
-    docker build -t adoagent-kubernetes:latest .
-    ```
+   > **Warning**
 
-10. Tag and push the container image into a Container Registry repository of your choice. We are using Docker Hub here. Feel free to use yours.
+   > Replace ```kledsonhugo``` by your Container Registry account.
 
-    ```console
-    docker image tag adoagent-kubernetes:latest kledsonhugo/adoagent-kubernetes:latest
-    docker push kledsonhugo/adoagent-kubernetes:latest
-    ```
-    > **Warning**
+9. Save the following content to file **```deployment.yml```**.
 
-    > Replace the Docker Hub account ```kledsonhugo``` by your Container Registry account.
+   ```
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+   name: adoagent-deployment
+   spec:
+   selector:
+       matchLabels:
+       app: adoagent
+   replicas: 2
+   template:
+       metadata:
+       labels:
+           app: adoagent
+       spec:
+       containers:
+       - name: adoagent
+           image: kledsonhugo/adoagent:latest
+           env:
+           - name: AZP_URL
+             value: https://dev.azure.com/csu-csa-appinnovation
+           - name: AZP_TOKEN
+             value: XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+           - name: AZP_POOL
+             value: Kubernetes-pool
+   ```
 
-11. Save the following content to file **```deployment.yml```**.
+   > **Warning**
 
-    ```
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-    name: adoagent-deployment
-    spec:
-    selector:
-        matchLabels:
-        app: adoagent
-    replicas: 2
-    template:
-        metadata:
-        labels:
-            app: adoagent
-        spec:
-        containers:
-        - name: adoagent
-            image: kledsonhugo/adoagent-kubernetes:latest
-            env:
-            - name: AZP_URL
-            value: https://dev.azure.com/csa-app-innovation
-            - name: AZP_TOKEN
-            value: XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-            - name: AZP_POOL
-            value: Kubernetes
-    ```
+   > You need replace the var values for ```$AZP_URL``` and ```$AZP_TOKEN``` with your ADO url and token.
 
-    > **Warning**
+   > Replace ```kledsonhugo``` by your Container Registry account.
 
-    > You need to control your Azure ADO url and token using environment variables.
+   | Env Var | Description |
+   |----------|---------------|
+   | `AZP_URL` | The URL of the Azure DevOps or Azure DevOps Server instance. |
+   | `AZP_TOKEN` | [Personal Access Token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&amp%3Btabs=Windows&tabs=Windows) (PAT) with Agent Pools (read, manage) scope, created by a user who has permission to configure agents, at AZP_URL. |
 
-    > Replace file content with proper values.
-
-    | Env Var | Description |
-    |----------|---------------|
-    | `AZP_URL` | The URL of the Azure DevOps or Azure DevOps Server instance. |
-    | `AZP_TOKEN` | [Personal Access Token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&amp%3Btabs=Windows&tabs=Windows) (PAT) with Agent Pools (read, manage) scope, created by a user who has permission to configure agents, at AZP_URL. |
-
-12. Deploy the Kubernetes pods.
+10. Deploy the Kubernetes pods.
 
     ```console
     kubectl apply -f deployment.yml
     ```
 
-13. Validate if the Kubernetes pods are running.
+11. Validate if the Kubernetes pods are running with command ```kubectl get pods -o wide```.
 
-    ![ADO agent running](/images/ado-agent_pool-kubernetes-running.png)
+    ![ADO agent running](/images/kubernetes-pods_running.png)
 
-14. Validate if the ADO agent is listening inside the Kubernetes pods.
+12. Go to your **Organization settings**, select **Agent pools** and select **Kubernetes-pool**.
 
-    ![ADO agent connected](/images/ado-agent_pool-kubernetes-connected.png)
+12. You should now see your Kubernetes pods connected in the **Agents** menu.
 
-15. Go to your **Organization settings**, select **Agent pools** and select **Kubernetes**.
+    ![ADO agent connected](/images/kubernetes-agents_connected.png)
 
-16. You should now see your container agent connected in the **Agents** menu.
+    > You can run multiple pods as you want. In the picture there are 2 online as example only.
 
-    ![ADO agent pool with connected agent](/images/ado-agent_pool-kubernetes-connected_agent.png)
-
-17. You can scale the Kubernetes pods as needed.
 </details>
-
 
 <br><br>
 ## Create project pipeline for Self-hosted agents
@@ -502,11 +489,11 @@ Microsoft Learn allows [Create a build pipeline with Azure Pipelines](https://le
 
 5. Select **Empty pipeline** then **Apply**.
 
-6. Select **Kubernetes** for **Agent pool**, click the plus signal on **Agent job 1** and select **Command line**. In the **Triggers** menu, select **Enable continuous integration**, then click **Save & queue**.
+6. Select **Kubernetes-pool** for **Agent pool**, click the plus signal on **Agent job 1** and select **Command line**. In the **Triggers** menu, select **Enable continuous integration**, then click **Save & queue**.
 
-   ![ADO pipeline 1](/images/ado-pipeline-1.png)
+   ![ADO pipeline Tasks](/images/ado-pipeline-tasks.png)
 
-   ![ADO pipeline 2](/images/ado-pipeline-2.png)
+   ![ADO pipeline Trigger](/images/ado-pipeline-trigger.png)
 
 7. Type a comment and select **Save and run**.
 

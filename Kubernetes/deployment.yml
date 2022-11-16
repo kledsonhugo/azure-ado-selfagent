@@ -14,11 +14,11 @@ spec:
     spec:
       containers:
       - name: adoagent
-        image: kledsonhugo/adoagent-kubernetes:latest
+        image: kledsonhugo/adoagent:latest
         env:
         - name: AZP_URL
           value: https://dev.azure.com/csu-csa-appinnovation
         - name: AZP_TOKEN
-          value: XXXXXXXXXXXXXXXXXX
+          value: cfj6oeazgfdjzliyvmsc6wrbeifncnxighots4doph64r3ullyma
         - name: AZP_POOL
           value: Kubernetes-pool
