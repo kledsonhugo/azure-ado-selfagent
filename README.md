@@ -45,7 +45,7 @@ When you run the pipeline, it runs on an agent from that pool that meets the dem
 
 In Azure Pipelines, pools are scoped to the entire organization, so you can share the agent machines across projects.
 
-This article describes how to [Create the Azure DevOps Agent](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml%2Cbrowser#create-agent-pools) (ADO) on different self-hosted targets.
+This article describes how to [Create the Azure DevOps Agent](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml%2Cbrowser#create-agent-pools) on different self-hosted targets.
 
 - [Self-hosted agents on Docker](#self-hosted-agents-on-docker)
 - [Self-hosted agents on Kubernetes](#self-hosted-agents-on-kubernetes)
