@@ -267,8 +267,6 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 
 > A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is required to perform this setion.
 
-<br><br>
-
 1. Go to your organization and select **Organization settings**.
 
    ![ADO Organization Settings](/images/ado-organization_settings.png)
@@ -502,8 +500,6 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 > **Note**
 
 > The [Azure Command-Line Interface (CLI)](https://learn.microsoft.com/en-us/cli/azure/what-is-azure-cli) is required to perform this section, unless you choose Azure Cloud Shell.
-
-<br><br>
 
 1. Go to your organization and select **Organization settings**.
 
