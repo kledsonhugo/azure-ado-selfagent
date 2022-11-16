@@ -77,133 +77,133 @@ To be successful and get the most of this section, you are encouraged to have th
 
 6. Save the following content to file **```Dockerfile```**.
 
-    ```
-    FROM ubuntu:20.04
-    RUN DEBIAN_FRONTEND=noninteractive apt-get update
-    RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+   ```
+   FROM ubuntu:20.04
+   RUN DEBIAN_FRONTEND=noninteractive apt-get update
+   RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 
-    RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
-        apt-transport-https \
-        apt-utils \
-        ca-certificates \
-        curl \
-        git \
-        iputils-ping \
-        jq \
-        lsb-release \
-        software-properties-common
+   RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
+       apt-transport-https \
+       apt-utils \
+       ca-certificates \
+       curl \
+       git \
+       iputils-ping \
+       jq \
+       lsb-release \
+       software-properties-common
 
-    RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+   RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
-    # Can be 'linux-x64', 'linux-arm64', 'linux-arm', 'rhel.6-x64'.
-    ENV TARGETARCH=linux-x64
+   # Can be 'linux-x64', 'linux-arm64', 'linux-arm', 'rhel.6-x64'.
+   ENV TARGETARCH=linux-x64
 
-    WORKDIR /azp
+   WORKDIR /azp
 
-    COPY ./start.sh .
-    RUN chmod +x start.sh
+   COPY ./start.sh .
+   RUN chmod +x start.sh
 
-    ENTRYPOINT [ "./start.sh" ]
-    ```
+   ENTRYPOINT [ "./start.sh" ]
+   ```
 
 7. Save the following content to file **```start.sh```**.
 
-    ```
-    #!/bin/bash
-    set -e
+   ```
+   #!/bin/bash
+   set -e
 
-    if [ -z "$AZP_URL" ]; then
-    echo 1>&2 "error: missing AZP_URL environment variable"
-    exit 1
-    fi
+   if [ -z "$AZP_URL" ]; then
+       echo 1>&2 "error: missing AZP_URL environment variable"
+       exit 1
+   fi
 
-    if [ -z "$AZP_TOKEN_FILE" ]; then
-    if [ -z "$AZP_TOKEN" ]; then
-        echo 1>&2 "error: missing AZP_TOKEN environment variable"
-        exit 1
-    fi
+   if [ -z "$AZP_TOKEN_FILE" ]; then
+       if [ -z "$AZP_TOKEN" ]; then
+           echo 1>&2 "error: missing AZP_TOKEN environment variable"
+           exit 1
+       fi
 
-    AZP_TOKEN_FILE=/azp/.token
-    echo -n $AZP_TOKEN > "$AZP_TOKEN_FILE"
-    fi
+       AZP_TOKEN_FILE=/azp/.token
+       echo -n $AZP_TOKEN > "$AZP_TOKEN_FILE"
+   fi
 
-    unset AZP_TOKEN
+   unset AZP_TOKEN
 
-    if [ -n "$AZP_WORK" ]; then
-    mkdir -p "$AZP_WORK"
-    fi
+   if [ -n "$AZP_WORK" ]; then
+       mkdir -p "$AZP_WORK"
+   fi
 
-    export AGENT_ALLOW_RUNASROOT="1"
+   export AGENT_ALLOW_RUNASROOT="1"
 
-    cleanup() {
-    if [ -e config.sh ]; then
-        print_header "Cleanup. Removing Azure Pipelines agent..."
+   cleanup() {
+       if [ -e config.sh ]; then
+           print_header "Cleanup. Removing Azure Pipelines agent..."
 
-        # If the agent has some running jobs, the configuration removal process will fail.
-        # So, give it some time to finish the job.
-        while true; do
-        ./config.sh remove --unattended --auth PAT --token $(cat "$AZP_TOKEN_FILE") && break
+           # If the agent has some running jobs, the configuration removal process will fail.
+           # So, give it some time to finish the job.
+           while true; do
+               ./config.sh remove --unattended --auth PAT --token $(cat "$AZP_TOKEN_FILE") && break
 
-        echo "Retrying in 30 seconds..."
-        sleep 30
-        done
-    fi
-    }
+               echo "Retrying in 30 seconds..."
+               sleep 30
+           done
+       fi
+   }
 
-    print_header() {
-    lightcyan='\033[1;36m'
-    nocolor='\033[0m'
-    echo -e "${lightcyan}$1${nocolor}"
-    }
+   print_header() {
+       lightcyan='\033[1;36m'
+       nocolor='\033[0m'
+       echo -e "${lightcyan}$1${nocolor}"
+   }
 
-    # Let the agent ignore the token env variables
-    export VSO_AGENT_IGNORE=AZP_TOKEN,AZP_TOKEN_FILE
+   # Let the agent ignore the token env variables
+   export VSO_AGENT_IGNORE=AZP_TOKEN,AZP_TOKEN_FILE
 
-    print_header "1. Determining matching Azure Pipelines agent..."
+   print_header "1. Determining matching Azure Pipelines agent..."
 
-    AZP_AGENT_PACKAGES=$(curl -LsS \
-        -u user:$(cat "$AZP_TOKEN_FILE") \
-        -H 'Accept:application/json;' \
-        "$AZP_URL/_apis/distributedtask/packages/agent?platform=$TARGETARCH&top=1")
+   AZP_AGENT_PACKAGES=$(curl -LsS \
+       -u user:$(cat "$AZP_TOKEN_FILE") \
+       -H 'Accept:application/json;' \
+       "$AZP_URL/_apis/distributedtask/packages/agent?platform=$TARGETARCH&top=1")
 
-    AZP_AGENT_PACKAGE_LATEST_URL=$(echo "$AZP_AGENT_PACKAGES" | jq -r '.value[0].downloadUrl')
+   AZP_AGENT_PACKAGE_LATEST_URL=$(echo "$AZP_AGENT_PACKAGES" | jq -r '.value[0].downloadUrl')
 
-    if [ -z "$AZP_AGENT_PACKAGE_LATEST_URL" -o "$AZP_AGENT_PACKAGE_LATEST_URL" == "null" ]; then
-    echo 1>&2 "error: could not determine a matching Azure Pipelines agent"
-    echo 1>&2 "check that account '$AZP_URL' is correct and the token is valid for that account"
-    exit 1
-    fi
+   if [ -z "$AZP_AGENT_PACKAGE_LATEST_URL" -o "$AZP_AGENT_PACKAGE_LATEST_URL" == "null" ]; then
+       echo 1>&2 "error: could not determine a matching Azure Pipelines agent"
+       echo 1>&2 "check that account '$AZP_URL' is correct and the token is valid for that account"
+       exit 1
+   fi
 
-    print_header "2. Downloading and extracting Azure Pipelines agent..."
+   print_header "2. Downloading and extracting Azure Pipelines agent..."
 
-    curl -LsS $AZP_AGENT_PACKAGE_LATEST_URL | tar -xz & wait $!
+   curl -LsS $AZP_AGENT_PACKAGE_LATEST_URL | tar -xz & wait $!
 
-    source ./env.sh
+   source ./env.sh
 
-    print_header "3. Configuring Azure Pipelines agent..."
+   print_header "3. Configuring Azure Pipelines agent..."
 
-    ./config.sh --unattended \
-    --agent "${AZP_AGENT_NAME:-$(hostname)}" \
-    --url "$AZP_URL" \
-    --auth PAT \
-    --token $(cat "$AZP_TOKEN_FILE") \
-    --pool "${AZP_POOL:-Default}" \
-    --work "${AZP_WORK:-_work}" \
-    --replace \
-    --acceptTeeEula & wait $!
+   ./config.sh --unattended \
+       --agent "${AZP_AGENT_NAME:-$(hostname)}" \
+       --url "$AZP_URL" \
+       --auth PAT \
+       --token $(cat "$AZP_TOKEN_FILE") \
+       --pool "${AZP_POOL:-Default}" \
+       --work "${AZP_WORK:-_work}" \
+       --replace \
+       --acceptTeeEula & wait $!
 
-    print_header "4. Running Azure Pipelines agent..."
+   print_header "4. Running Azure Pipelines agent..."
 
-    trap 'cleanup; exit 0' EXIT
-    trap 'cleanup; exit 130' INT
-    trap 'cleanup; exit 143' TERM
+   trap 'cleanup; exit 0' EXIT
+   trap 'cleanup; exit 130' INT
+   trap 'cleanup; exit 143' TERM
 
-    chmod +x ./run-docker.sh
+   chmod +x ./run-docker.sh
 
-    # To be aware of TERM and INT signals call run.sh
-    # Running it with the --once flag at the end will shut down the agent after the build is executed
-    ./run-docker.sh "$@" & wait $!
-    ```
+   # To be aware of TERM and INT signals call run.sh
+   # Running it with the --once flag at the end will shut down the agent after the build is executed
+   ./run-docker.sh "$@" & wait $!
+   ```
 
 8. Build the container and push it into a Container Registry repository of your choice.
 
@@ -220,10 +220,10 @@ To be successful and get the most of this section, you are encouraged to have th
 
    ```console
    docker run \
-   -e AZP_URL=$AZP_URL \
-   -e AZP_TOKEN=$AZP_TOKEN \
-   -e AZP_POOL=Docker-pool \
-   kledsonhugo/adoagent:latest
+       -e AZP_URL=$AZP_URL \
+       -e AZP_TOKEN=$AZP_TOKEN \
+       -e AZP_POOL=Docker-pool \
+       kledsonhugo/adoagent:latest
    ```
 
    > **Warning**
@@ -279,133 +279,133 @@ A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is requi
 
 6. Save the following content to file **```Dockerfile```**.
 
-    ```
-    FROM ubuntu:20.04
-    RUN DEBIAN_FRONTEND=noninteractive apt-get update
-    RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+   ```
+   FROM ubuntu:20.04
+   RUN DEBIAN_FRONTEND=noninteractive apt-get update
+   RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 
-    RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
-        apt-transport-https \
-        apt-utils \
-        ca-certificates \
-        curl \
-        git \
-        iputils-ping \
-        jq \
-        lsb-release \
-        software-properties-common
+   RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
+       apt-transport-https \
+       apt-utils \
+       ca-certificates \
+       curl \
+       git \
+       iputils-ping \
+       jq \
+       lsb-release \
+       software-properties-common
 
-    RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+   RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
-    # Can be 'linux-x64', 'linux-arm64', 'linux-arm', 'rhel.6-x64'.
-    ENV TARGETARCH=linux-x64
+   # Can be 'linux-x64', 'linux-arm64', 'linux-arm', 'rhel.6-x64'.
+   ENV TARGETARCH=linux-x64
 
-    WORKDIR /azp
+   WORKDIR /azp
 
-    COPY ./start.sh .
-    RUN chmod +x start.sh
+   COPY ./start.sh .
+   RUN chmod +x start.sh
 
-    ENTRYPOINT [ "./start.sh" ]
-    ```
+   ENTRYPOINT [ "./start.sh" ]
+   ```
 
 7. Save the following content to file **```start.sh```**.
 
-    ```
-    #!/bin/bash
-    set -e
+   ```
+   #!/bin/bash
+   set -e
 
-    if [ -z "$AZP_URL" ]; then
-    echo 1>&2 "error: missing AZP_URL environment variable"
-    exit 1
-    fi
+   if [ -z "$AZP_URL" ]; then
+       echo 1>&2 "error: missing AZP_URL environment variable"
+       exit 1
+   fi
 
-    if [ -z "$AZP_TOKEN_FILE" ]; then
-    if [ -z "$AZP_TOKEN" ]; then
-        echo 1>&2 "error: missing AZP_TOKEN environment variable"
-        exit 1
-    fi
+   if [ -z "$AZP_TOKEN_FILE" ]; then
+       if [ -z "$AZP_TOKEN" ]; then
+           echo 1>&2 "error: missing AZP_TOKEN environment variable"
+           exit 1
+       fi
 
-    AZP_TOKEN_FILE=/azp/.token
-    echo -n $AZP_TOKEN > "$AZP_TOKEN_FILE"
-    fi
+       AZP_TOKEN_FILE=/azp/.token
+       echo -n $AZP_TOKEN > "$AZP_TOKEN_FILE"
+   fi
 
-    unset AZP_TOKEN
+   unset AZP_TOKEN
 
-    if [ -n "$AZP_WORK" ]; then
-    mkdir -p "$AZP_WORK"
-    fi
+   if [ -n "$AZP_WORK" ]; then
+       mkdir -p "$AZP_WORK"
+   fi
 
-    export AGENT_ALLOW_RUNASROOT="1"
+   export AGENT_ALLOW_RUNASROOT="1"
 
-    cleanup() {
-    if [ -e config.sh ]; then
-        print_header "Cleanup. Removing Azure Pipelines agent..."
+   cleanup() {
+       if [ -e config.sh ]; then
+           print_header "Cleanup. Removing Azure Pipelines agent..."
 
-        # If the agent has some running jobs, the configuration removal process will fail.
-        # So, give it some time to finish the job.
-        while true; do
-        ./config.sh remove --unattended --auth PAT --token $(cat "$AZP_TOKEN_FILE") && break
+           # If the agent has some running jobs, the configuration removal process will fail.
+           # So, give it some time to finish the job.
+           while true; do
+               ./config.sh remove --unattended --auth PAT --token $(cat "$AZP_TOKEN_FILE") && break
 
-        echo "Retrying in 30 seconds..."
-        sleep 30
-        done
-    fi
-    }
+               echo "Retrying in 30 seconds..."
+               sleep 30
+           done
+       fi
+   }
 
-    print_header() {
-    lightcyan='\033[1;36m'
-    nocolor='\033[0m'
-    echo -e "${lightcyan}$1${nocolor}"
-    }
+   print_header() {
+       lightcyan='\033[1;36m'
+       nocolor='\033[0m'
+       echo -e "${lightcyan}$1${nocolor}"
+   }
 
-    # Let the agent ignore the token env variables
-    export VSO_AGENT_IGNORE=AZP_TOKEN,AZP_TOKEN_FILE
+   # Let the agent ignore the token env variables
+   export VSO_AGENT_IGNORE=AZP_TOKEN,AZP_TOKEN_FILE
 
-    print_header "1. Determining matching Azure Pipelines agent..."
+   print_header "1. Determining matching Azure Pipelines agent..."
 
-    AZP_AGENT_PACKAGES=$(curl -LsS \
-        -u user:$(cat "$AZP_TOKEN_FILE") \
-        -H 'Accept:application/json;' \
-        "$AZP_URL/_apis/distributedtask/packages/agent?platform=$TARGETARCH&top=1")
+   AZP_AGENT_PACKAGES=$(curl -LsS \
+       -u user:$(cat "$AZP_TOKEN_FILE") \
+       -H 'Accept:application/json;' \
+       "$AZP_URL/_apis/distributedtask/packages/agent?platform=$TARGETARCH&top=1")
 
-    AZP_AGENT_PACKAGE_LATEST_URL=$(echo "$AZP_AGENT_PACKAGES" | jq -r '.value[0].downloadUrl')
+   AZP_AGENT_PACKAGE_LATEST_URL=$(echo "$AZP_AGENT_PACKAGES" | jq -r '.value[0].downloadUrl')
 
-    if [ -z "$AZP_AGENT_PACKAGE_LATEST_URL" -o "$AZP_AGENT_PACKAGE_LATEST_URL" == "null" ]; then
-    echo 1>&2 "error: could not determine a matching Azure Pipelines agent"
-    echo 1>&2 "check that account '$AZP_URL' is correct and the token is valid for that account"
-    exit 1
-    fi
+   if [ -z "$AZP_AGENT_PACKAGE_LATEST_URL" -o "$AZP_AGENT_PACKAGE_LATEST_URL" == "null" ]; then
+       echo 1>&2 "error: could not determine a matching Azure Pipelines agent"
+       echo 1>&2 "check that account '$AZP_URL' is correct and the token is valid for that account"
+       exit 1
+   fi
 
-    print_header "2. Downloading and extracting Azure Pipelines agent..."
+   print_header "2. Downloading and extracting Azure Pipelines agent..."
 
-    curl -LsS $AZP_AGENT_PACKAGE_LATEST_URL | tar -xz & wait $!
+   curl -LsS $AZP_AGENT_PACKAGE_LATEST_URL | tar -xz & wait $!
 
-    source ./env.sh
+   source ./env.sh
 
-    print_header "3. Configuring Azure Pipelines agent..."
+   print_header "3. Configuring Azure Pipelines agent..."
 
-    ./config.sh --unattended \
-    --agent "${AZP_AGENT_NAME:-$(hostname)}" \
-    --url "$AZP_URL" \
-    --auth PAT \
-    --token $(cat "$AZP_TOKEN_FILE") \
-    --pool "${AZP_POOL:-Default}" \
-    --work "${AZP_WORK:-_work}" \
-    --replace \
-    --acceptTeeEula & wait $!
+   ./config.sh --unattended \
+       --agent "${AZP_AGENT_NAME:-$(hostname)}" \
+       --url "$AZP_URL" \
+       --auth PAT \
+       --token $(cat "$AZP_TOKEN_FILE") \
+       --pool "${AZP_POOL:-Default}" \
+       --work "${AZP_WORK:-_work}" \
+       --replace \
+       --acceptTeeEula & wait $!
 
-    print_header "4. Running Azure Pipelines agent..."
+   print_header "4. Running Azure Pipelines agent..."
 
-    trap 'cleanup; exit 0' EXIT
-    trap 'cleanup; exit 130' INT
-    trap 'cleanup; exit 143' TERM
+   trap 'cleanup; exit 0' EXIT
+   trap 'cleanup; exit 130' INT
+   trap 'cleanup; exit 143' TERM
 
-    chmod +x ./run-docker.sh
+   chmod +x ./run-docker.sh
 
-    # To be aware of TERM and INT signals call run.sh
-    # Running it with the --once flag at the end will shut down the agent after the build is executed
-    ./run-docker.sh "$@" & wait $!
-    ```
+   # To be aware of TERM and INT signals call run.sh
+   # Running it with the --once flag at the end will shut down the agent after the build is executed
+   ./run-docker.sh "$@" & wait $!
+   ```
 
 8. Build the container and push it into a Container Registry repository of your choice.
 
@@ -486,10 +486,6 @@ A [Kubernetes](https://kubernetes.io/docs/tasks/tools/) active software is requi
 
 <br><br>
 The [Azure Command-Line Interface (CLI)](https://learn.microsoft.com/en-us/cli/azure/what-is-azure-cli) is required to perform this section.
-
-It is a cross-platform command-line tool to connect to Azure and execute administrative commands on Azure resources.
-
-It allows the execution of commands through a terminal using interactive command-line prompts or a script.
 <br><br>
 
 1. Go to your organization and select **Organization settings**.
@@ -514,135 +510,135 @@ It allows the execution of commands through a terminal using interactive command
 
 6. Save the following content to file **```Dockerfile```**.
 
-    ```
-    FROM ubuntu:20.04
-    RUN DEBIAN_FRONTEND=noninteractive apt-get update
-    RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+   ```
+   FROM ubuntu:20.04
+   RUN DEBIAN_FRONTEND=noninteractive apt-get update
+   RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 
-    RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
-        apt-transport-https \
-        apt-utils \
-        ca-certificates \
-        curl \
-        git \
-        iputils-ping \
-        jq \
-        lsb-release \
-        software-properties-common
+   RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
+       apt-transport-https \
+       apt-utils \
+       ca-certificates \
+       curl \
+       git \
+       iputils-ping \
+       jq \
+       lsb-release \
+       software-properties-common
 
-    RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+   RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
-    # Can be 'linux-x64', 'linux-arm64', 'linux-arm', 'rhel.6-x64'.
-    ENV TARGETARCH=linux-x64
+   # Can be 'linux-x64', 'linux-arm64', 'linux-arm', 'rhel.6-x64'.
+   ENV TARGETARCH=linux-x64
 
-    WORKDIR /azp
+   WORKDIR /azp
 
-    COPY ./start.sh .
-    RUN chmod +x start.sh
+   COPY ./start.sh .
+   RUN chmod +x start.sh
 
-    ENTRYPOINT [ "./start.sh" ]
-    ```
+   ENTRYPOINT [ "./start.sh" ]
+   ```
 
 7. Save the following content to file **```start.sh```**.
 
-    ```
-    #!/bin/bash
-    set -e
+   ```
+   #!/bin/bash
+   set -e
 
-    if [ -z "$AZP_URL" ]; then
-    echo 1>&2 "error: missing AZP_URL environment variable"
-    exit 1
-    fi
+   if [ -z "$AZP_URL" ]; then
+       echo 1>&2 "error: missing AZP_URL environment variable"
+       exit 1
+   fi
 
-    if [ -z "$AZP_TOKEN_FILE" ]; then
-    if [ -z "$AZP_TOKEN" ]; then
-        echo 1>&2 "error: missing AZP_TOKEN environment variable"
-        exit 1
-    fi
+   if [ -z "$AZP_TOKEN_FILE" ]; then
+       if [ -z "$AZP_TOKEN" ]; then
+           echo 1>&2 "error: missing AZP_TOKEN environment variable"
+           exit 1
+       fi
 
-    AZP_TOKEN_FILE=/azp/.token
-    echo -n $AZP_TOKEN > "$AZP_TOKEN_FILE"
-    fi
+       AZP_TOKEN_FILE=/azp/.token
+       echo -n $AZP_TOKEN > "$AZP_TOKEN_FILE"
+   fi
 
-    unset AZP_TOKEN
+   unset AZP_TOKEN
 
-    if [ -n "$AZP_WORK" ]; then
-    mkdir -p "$AZP_WORK"
-    fi
+   if [ -n "$AZP_WORK" ]; then
+       mkdir -p "$AZP_WORK"
+   fi
 
-    export AGENT_ALLOW_RUNASROOT="1"
+   export AGENT_ALLOW_RUNASROOT="1"
 
-    cleanup() {
-    if [ -e config.sh ]; then
-        print_header "Cleanup. Removing Azure Pipelines agent..."
+   cleanup() {
+       if [ -e config.sh ]; then
+           print_header "Cleanup. Removing Azure Pipelines agent..."
 
-        # If the agent has some running jobs, the configuration removal process will fail.
-        # So, give it some time to finish the job.
-        while true; do
-        ./config.sh remove --unattended --auth PAT --token $(cat "$AZP_TOKEN_FILE") && break
+           # If the agent has some running jobs, the configuration removal process will fail.
+           # So, give it some time to finish the job.
+           while true; do
+           ./config.sh remove --unattended --auth PAT --token $(cat "$AZP_TOKEN_FILE") && break
 
-        echo "Retrying in 30 seconds..."
-        sleep 30
-        done
-    fi
-    }
+           echo "Retrying in 30 seconds..."
+           sleep 30
+           done
+       fi
+   }
 
-    print_header() {
-    lightcyan='\033[1;36m'
-    nocolor='\033[0m'
-    echo -e "${lightcyan}$1${nocolor}"
-    }
+   print_header() {
+       lightcyan='\033[1;36m'
+       nocolor='\033[0m'
+       echo -e "${lightcyan}$1${nocolor}"
+   }
 
-    # Let the agent ignore the token env variables
-    export VSO_AGENT_IGNORE=AZP_TOKEN,AZP_TOKEN_FILE
+   # Let the agent ignore the token env variables
+   export VSO_AGENT_IGNORE=AZP_TOKEN,AZP_TOKEN_FILE
 
-    print_header "1. Determining matching Azure Pipelines agent..."
+   print_header "1. Determining matching Azure Pipelines agent..."
 
-    AZP_AGENT_PACKAGES=$(curl -LsS \
-        -u user:$(cat "$AZP_TOKEN_FILE") \
-        -H 'Accept:application/json;' \
-        "$AZP_URL/_apis/distributedtask/packages/agent?platform=$TARGETARCH&top=1")
+   AZP_AGENT_PACKAGES=$(curl -LsS \
+       -u user:$(cat "$AZP_TOKEN_FILE") \
+       -H 'Accept:application/json;' \
+       "$AZP_URL/_apis/distributedtask/packages/agent?platform=$TARGETARCH&top=1")
 
-    AZP_AGENT_PACKAGE_LATEST_URL=$(echo "$AZP_AGENT_PACKAGES" | jq -r '.value[0].downloadUrl')
+   AZP_AGENT_PACKAGE_LATEST_URL=$(echo "$AZP_AGENT_PACKAGES" | jq -r '.value[0].downloadUrl')
 
-    if [ -z "$AZP_AGENT_PACKAGE_LATEST_URL" -o "$AZP_AGENT_PACKAGE_LATEST_URL" == "null" ]; then
-    echo 1>&2 "error: could not determine a matching Azure Pipelines agent"
-    echo 1>&2 "check that account '$AZP_URL' is correct and the token is valid for that account"
-    exit 1
-    fi
+   if [ -z "$AZP_AGENT_PACKAGE_LATEST_URL" -o "$AZP_AGENT_PACKAGE_LATEST_URL" == "null" ]; then
+       echo 1>&2 "error: could not determine a matching Azure Pipelines agent"
+       echo 1>&2 "check that account '$AZP_URL' is correct and the token is valid for that account"
+       exit 1
+   fi
 
-    print_header "2. Downloading and extracting Azure Pipelines agent..."
+   print_header "2. Downloading and extracting Azure Pipelines agent..."
 
-    curl -LsS $AZP_AGENT_PACKAGE_LATEST_URL | tar -xz & wait $!
+   curl -LsS $AZP_AGENT_PACKAGE_LATEST_URL | tar -xz & wait $!
 
-    source ./env.sh
+   source ./env.sh
 
-    print_header "3. Configuring Azure Pipelines agent..."
+   print_header "3. Configuring Azure Pipelines agent..."
 
-    ./config.sh --unattended \
-    --agent "${AZP_AGENT_NAME:-$(hostname)}" \
-    --url "$AZP_URL" \
-    --auth PAT \
-    --token $(cat "$AZP_TOKEN_FILE") \
-    --pool "${AZP_POOL:-Default}" \
-    --work "${AZP_WORK:-_work}" \
-    --replace \
-    --acceptTeeEula & wait $!
+   ./config.sh --unattended \
+       --agent "${AZP_AGENT_NAME:-$(hostname)}" \
+       --url "$AZP_URL" \
+       --auth PAT \
+       --token $(cat "$AZP_TOKEN_FILE") \
+       --pool "${AZP_POOL:-Default}" \
+       --work "${AZP_WORK:-_work}" \
+       --replace \
+       --acceptTeeEula & wait $!
 
-    print_header "4. Running Azure Pipelines agent..."
+   print_header "4. Running Azure Pipelines agent..."
 
-    trap 'cleanup; exit 0' EXIT
-    trap 'cleanup; exit 130' INT
-    trap 'cleanup; exit 143' TERM
+   trap 'cleanup; exit 0' EXIT
+   trap 'cleanup; exit 130' INT
+   trap 'cleanup; exit 143' TERM
 
-    chmod +x ./run-docker.sh
+   chmod +x ./run-docker.sh
 
-    # To be aware of TERM and INT signals call run.sh
-    # Running it with the --once flag at the end will shut down the agent after the build is executed
-    ./run-docker.sh "$@" & wait $!
-    ```
+   # To be aware of TERM and INT signals call run.sh
+   # Running it with the --once flag at the end will shut down the agent after the build is executed
+   ./run-docker.sh "$@" & wait $!
+   ```
 
-8. Deploy and configure Azure Kubernetes Service.
+8. Deploy and configure Azure Kubernetes Service (AKS).
 
    > Follow the steps in [Quickstart: Deploy an Azure Kubernetes Service (AKS) cluster](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal).
 
@@ -652,72 +648,83 @@ It allows the execution of commands through a terminal using interactive command
 
    > After this, you can push and pull containers from Azure Container Registry.
 
-8. Build the container and push it into a Container Registry repository of your choice.
+10. Build the container and push it into a Container Registry repository of your choice.
 
-   ```console
-   docker build -t kledsonhugo/adoagent:latest .
-   docker push kledsonhugo/adoagent:latest
-   ```
+    ```console
+    docker build -t akspoolacr.azurecr.io/adoagent:latest .
+    docker push akspoolacr.azurecr.io/adoagent:latest
+    ```
 
-   > **Warning**
+    > **Warning**
 
-   > Replace ```kledsonhugo``` by your Container Registry account.
+    > Replace ```akspoolacr.azurecr.io``` by your Container Registry account and ensure you are logged to the Container registry.
 
-9. Save the following content to file **```deployment.yml```**.
+11. Save the following content to file **```deployment.yml```**.
 
-   ```
-   apiVersion: apps/v1
-   kind: Deployment
-   metadata:
-   name: adoagent-deployment
-   spec:
-   selector:
-       matchLabels:
-       app: adoagent
-   replicas: 2
-   template:
-       metadata:
-       labels:
-           app: adoagent
-       spec:
-       containers:
-       - name: adoagent
-           image: kledsonhugo/adoagent:latest
-           env:
-           - name: AZP_URL
-             value: https://dev.azure.com/csu-csa-appinnovation
-           - name: AZP_TOKEN
-             value: XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-           - name: AZP_POOL
-             value: Kubernetes-pool
-   ```
+    ```
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+    name: adoagent-deployment
+    spec:
+    selector:
+        matchLabels:
+        app: adoagent
+    replicas: 2
+    template:
+        metadata:
+        labels:
+            app: adoagent
+        spec:
+        containers:
+        - name: adoagent
+            image: akspoolacr.azurecr.io/adoagent:latest
+            env:
+            - name: AZP_URL
+              value: https://dev.azure.com/csu-csa-appinnovation
+            - name: AZP_TOKEN
+              value: XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            - name: AZP_POOL
+              value: AKS-pool
+    ```
 
-   > **Warning**
+    > **Warning**
 
-   > You need replace values for vars ```AZP_URL``` and ```AZP_TOKEN``` with your ADO url and token.
+    > You need replace values for vars ```AZP_URL``` and ```AZP_TOKEN``` with your ADO url and token.
 
-   > Replace ```kledsonhugo``` by your Container Registry account.
+    > Replace ```akspoolacr.azurecr.io``` by your Container Registry account.
 
-   | Env Var | Description |
-   |----------|---------------|
-   | `AZP_URL` | The URL of the Azure DevOps or Azure DevOps Server instance. |
-   | `AZP_TOKEN` | [Personal Access Token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&amp%3Btabs=Windows&tabs=Windows) (PAT) with Agent Pools (read, manage) scope, created by a user who has permission to configure agents, at AZP_URL. |
+    | Env Var | Description |
+    |----------|---------------|
+    | `AZP_URL` | The URL of the Azure DevOps or Azure DevOps Server instance. |
+    | `AZP_TOKEN` | [Personal Access Token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&amp%3Btabs=Windows&tabs=Windows) (PAT) with Agent Pools (read, manage) scope, created by a user who has permission to configure agents, at AZP_URL. |
 
-10. Deploy the Kubernetes pods.
+12. Connect to your AKS cluster.
+
+    ```console
+    az account set --subscription $AZ_SUBSCRIPTION_ID
+    az aks get-credentials --resource-group $AZ_AKS_CLUSTER --name $AZ_AKS_CLUSTER
+    ```
+
+    > **Warning**
+
+    > You need replace ```$AZ_SUBSCRIPTION_ID```, ```$AZ_AKS_CLUSTER```  and ```$AZ_AKS_CLUSTER``` with your proper values.
+
+13. Deploy the AKS pods.
 
     ```console
     kubectl apply -f deployment.yml
     ```
 
-11. Validate if the Kubernetes pods are running with command ```kubectl get pods -o wide```.
+14. Validate if the AKS pods are running with command ```kubectl get pods -o wide```.
 
-    ![ADO agent running](/images/kubernetes-pods_running.png)
+    ![ADO agent running](/images/aks-pods_running.png)
 
-12. Go to your **Organization settings**, select **Agent pools** and select **Kubernetes-pool**.
+15. Go to your **Organization settings**, select **Agent pools** and select **AKS-pool**.
 
-13. You should now see your Kubernetes pods connected in the **Agents** menu.
+16. You should now see your AKS pods connected in the **Agents** menu.
 
-    ![ADO agent connected](/images/kubernetes-agents_connected.png)
+    ![ADO agent connected](/images/aks-agents_connected.png)
 
     > You can run multiple pods as you want. In the picture there are 2 online as example only.
 
