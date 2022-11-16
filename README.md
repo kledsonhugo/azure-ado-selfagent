@@ -17,8 +17,6 @@ Self-hosted agents give you more control to install dependent software needed fo
 
 > If you have already an Azure DevOps organization, jump to [Create and manage agent pools](#create-and-manage-agent-pools)
 
-<br><br>
-
 1. Log into [Azure DevOps](https://dev.azure.com/) using your Microsoft account.
 
    <img src="./images/ado-microsoft_account.png" width="350">
