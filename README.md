@@ -969,9 +969,9 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 
     ![ADO agent running](/images/ContainerApps-pods_running.png)
 
-15. Go to your **Organization settings**, select **Agent pools** and select **AKS-pool**.
+15. Go to your **Organization settings**, select **Agent pools** and select **ContainerApps-pool**.
 
-16. You should now see your AKS pods connected in the **Agents** menu.
+16. You should now see your Azure Container Apps containers connected in the **Agents** menu, as the example below.
 
     ![ADO agent connected](/images/ContainerApps-agents_connected.png)
 
