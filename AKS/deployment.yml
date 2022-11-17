@@ -19,6 +19,6 @@ spec:
         - name: AZP_URL
           value: https://dev.azure.com/csu-csa-appinnovation
         - name: AZP_TOKEN
-          value: XXXXXXXXXXXXXXXXXXXXXXX
+          value: XXXXXXXXXXXXXXXXXXXXXXXXXX
         - name: AZP_POOL
           value: AKS-pool
