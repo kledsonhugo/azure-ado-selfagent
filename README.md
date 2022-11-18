@@ -730,7 +730,7 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 
 13. Go to your **Organization settings**, select **Agent pools** and select **ACI-pool**.
 
-14. You should now see your AKS pods connected in the **Agents** menu.
+14. You should now see your ACI container connected in the **Agents** menu.
 
     ![ADO agent connected](/images/aci-agent_connected.png)
 
