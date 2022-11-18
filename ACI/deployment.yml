@@ -1,0 +1,25 @@
+apiVersion: 2019-12-01
+location: westus
+name: adoagentgroup
+properties:
+  containers:
+  - name: adoagent
+    properties:
+      image: akspoolacr.azurecr.io/adoagent:latest
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 1.5
+      environmentVariables:
+        - name: AZP_URL
+          value: https://dev.azure.com/csu-csa-appinnovation
+        - name: AZP_TOKEN
+          value: XXXXXXXXXXXXXXXXXXXXXXXXX
+        - name: AZP_POOL
+          value: ACI-pool
+  imageRegistryCredentials:
+  - server: akspoolacr.azurecr.io
+    username: akspoolacr
+    password: XXXXXXXXXXXXXXXXXXXXXXXX
+  osType: Linux
+type: Microsoft.ContainerInstance/containerGroups
