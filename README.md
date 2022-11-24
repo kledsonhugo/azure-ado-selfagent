@@ -751,6 +751,9 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 
 > The [Azure Command-Line Interface (CLI)](https://learn.microsoft.com/en-us/cli/azure/what-is-azure-cli) is required to perform this section, unless you use Azure Cloud Shell.
 
+> Architecture reference
+> ![AKS Architecture](/images/aks-architecture.png)
+
 1. Go to your organization and select **Organization settings**.
 
    ![ADO Organization Settings](/images/ado-organization_settings.png)
