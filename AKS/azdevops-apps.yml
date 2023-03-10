@@ -1,0 +1,44 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: azdevops-secret
+data:
+  AZP_TOKEN: XXXXXXXXXXXXXXXX
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azdevops-deployment
+  labels:
+    app: azdevops-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azdevops-agent
+  template:
+    metadata:
+      labels:
+        app: azdevops-agent
+    spec:
+      containers:
+      - name: azdevops-agent
+        image: XXXXXXXXXXXXXXXXXXXXXXXXXX
+        env:
+          - name: AZP_URL
+            value: XXXXXXXXXXXXXXXXXXXXXXXXXXX
+          - name: AZP_POOL
+            value: AKS
+          - name: AZP_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: azdevops-secret
+                key: AZP_TOKEN
+        volumeMounts:
+        - mountPath: /var/run/docker.sock
+          name: docker-volume
+      volumes:
+      - name: docker-volume
+        hostPath:
+          path: /var/run/docker.sock
