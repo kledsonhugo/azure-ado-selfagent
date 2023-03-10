@@ -60,7 +60,7 @@ When you run the pipeline, it runs on an agent from that pool that meets the dem
 
 In Azure Pipelines, pools are scoped to the entire organization, so you can share the agent machines across projects.
 
-This article describes how to [Create the Azure DevOps Agent](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml%2Cbrowser#create-agent-pools) on different self-hosted targets.
+This article describes how to [Create the Azure DevOps Agent](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml%2Cbrowser#create-agent-pools) on different self-hosted targets using containers.
 
 - [Self-hosted agents on ACI](#self-hosted-agents-on-aci)
 - [Self-hosted agents on AKS](#self-hosted-agents-on-aks)
@@ -326,12 +326,9 @@ This article describes how to [Create the Azure DevOps Agent](https://learn.micr
 
 <br>
 
-> **Note**
+#### Target Architecture
 
-> The [Azure Command-Line Interface (CLI)](https://learn.microsoft.com/en-us/cli/azure/what-is-azure-cli) is required to perform this section, unless you use Azure Cloud Shell.
-
-> Architecture reference
-> ![AKS Architecture](/images/aks-architecture.png)
+![AKS Architecture](/images/aks-architecture.png)
 
 <br>
 
@@ -942,5 +939,3 @@ Self-hosted Azure Pipelines agents are used for this scaler. By autoscaling the 
      ![ScaledObject status](/images/aks-auto_scaling-pods-after.png)
 
 </details>
-
-<br>
