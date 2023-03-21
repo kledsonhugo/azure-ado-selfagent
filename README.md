@@ -237,6 +237,8 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 </details>
 
+<br>
+
 ## **Setup Pipeline for [Self-hosted agents](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/v2-linux?view=azure-devops)**
 
 1. Go to your organization and select an existent project.
