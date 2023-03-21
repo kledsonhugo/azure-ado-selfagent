@@ -4,7 +4,7 @@ kind: Secret
 metadata:
   name: azdevops-secret
 data:
-  AZP_TOKEN: XXXXXXXXXXXXXXXX
+  AZP_TOKEN: ****************
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -24,10 +24,10 @@ spec:
     spec:
       containers:
       - name: azdevops-agent
-        image: XXXXXXXXXXXXXXXXXXXXXXXXXX
+        image: ****************.azurecr.io/adoagent:v1
         env:
           - name: AZP_URL
-            value: XXXXXXXXXXXXXXXXXXXXXXXXXXX
+            value: https://dev.azure.com/****************
           - name: AZP_POOL
             value: AKS
           - name: AZP_TOKEN

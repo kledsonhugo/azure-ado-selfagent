@@ -1,8 +1,0 @@
-version: '3'
-services:
-  adoagent:
-    image: akspoolacr.azurecr.io/adoagent:latest
-    environment:
-      AZP_URL: "https://dev.azure.com/csu-csa-appinnovation"
-      AZP_TOKEN: "XXXXXXXXXXXXXXXXXXXXXXXXX"
-      AZP_POOL: "ACI-pool"

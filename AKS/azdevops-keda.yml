@@ -4,7 +4,7 @@ kind: Secret
 metadata:
   name: azdevops-pipeline-auth
 data:
-  AZP_TOKEN: XXXXXXXXXXXXXXXXXXXXXXXXXX
+  AZP_TOKEN: ****************
 ---
 apiVersion: keda.sh/v1alpha1
 kind: TriggerAuthentication
@@ -24,11 +24,11 @@ spec:
   scaleTargetRef:
     name: azdevops-deployment
   minReplicaCount: 1
-  maxReplicaCount: 2
+  maxReplicaCount: 5
   triggers:
   - type: azure-pipelines
     metadata:
-      poolID: "10"
+      poolID: "****************"
       organizationURLFromEnv: "AZP_URL"
     authenticationRef:
      name: azdevops-pipeline-trigger-auth

@@ -5,21 +5,21 @@ properties:
   containers:
   - name: adoagent
     properties:
-      image: adoagentacr.azurecr.io/adoagent:latest
+      image: ****************.azurecr.io/adoagent:latest
       resources:
         requests:
           cpu: 1
           memoryInGb: 1.5
       environmentVariables:
       - name: AZP_URL
-        value: https://dev.azure.com/csu-csa-appinnovation
+        value: https://dev.azure.com/****************
       - name: AZP_TOKEN
-        value: XXXXXXXXXXXXXXXXXXXXXXX
+        value: ****************
       - name: AZP_POOL
-        value: ACI-pool
+        value: ****************
   osType: Linux
   imageRegistryCredentials:
-  - server: adoagentacr.azurecr.io
-    username: adoagentacr
-    password: XXXXXXXXXXXXXXXX
+  - server: ****************.azurecr.io
+    username: ****************
+    password: ****************
 type: Microsoft.ContainerInstance/containerGroups
