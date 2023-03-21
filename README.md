@@ -19,8 +19,6 @@ Desired architecture where Azure Kubernetes Service is hosting the Azure DevOps 
 
 ## **Sign up for [Azure Pipelines](https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/pipelines-sign-up?view=azure-devops)**
 
-<br>
-
 1. Log into [Azure DevOps](https://dev.azure.com/) using your account.
 
    > **Note**: Sign up for an Azure DevOps organization to begin managing CI/CD to deploy your code.
@@ -34,8 +32,6 @@ Desired architecture where Azure Kubernetes Service is hosting the Azure DevOps 
 <br>
 
 ## **Create [Agent Pools](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml%2Cbrowser#create-agent-pools)**
-
-<br>
 
 An agent pool is a collection of agents.
 
@@ -53,14 +49,10 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 - [Self-hosted agents on Azure Kubernetes Service](#self-hosted-agents-on-azure-kubernetes-service)
 - [Self-hosted agents on Azure Container Apps](#self-hosted-agents-on-azure-container-apps)
 
-<br>
-
 ### Self-hosted agents on **Azure Container Instances**
 
 <details>
 <summary>Expand for instructions</summary>
-
-<br>
 
 1. Go to your organization and select **Organization settings**.
 
@@ -117,14 +109,10 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 </details>
 
-<br>
-
 ### Self-hosted agents on **Azure Kubernetes Services**
 
 <details>
 <summary>Expand for instructions</summary>
-
-<br>
 
 1. Go to your organization and select **Organization settings**.
 
@@ -184,14 +172,10 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 </details>
 
-<br>
-
 ### Self-hosted agents on **Azure Container Apps**
 
 <details>
 <summary>Expand for instructions</summary>
-
-<br>
 
 1. Go to your organization and select **Organization settings**.
 
@@ -253,11 +237,7 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 </details>
 
-<br>
-
 ## **Setup Pipeline for [Self-hosted agents](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/v2-linux?view=azure-devops)**
-
-<br>
 
 1. Go to your organization and select an existent project.
 
@@ -283,25 +263,17 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 ## **Auto-scaling Self-hosted agents using [KEDA](https://keda.sh/docs/2.3/scalers/azure-pipelines/)**
 
-<br>
-
 With the addition of Azure Piplines support in [KEDA](https://keda.sh/docs/2.3/scalers/azure-pipelines/), it is possible to autoscale your Self-hosted agents based on agent pool queue length.
 
 In this section I am going to use KEDA to create Self-hosted scalable Azure DevOps agents deployed on different container services, like Azure Kubernetes Service (AKS), Azure Container Apps (ACA), etc.
 
-<br>
-
 - [Auto-scaling Self-hosted agents on Azure Kubernetes Service with KEDA](#auto-scaling-self-hosted-agents-on-azure-kubernetes-service-with-KEDA)
 - [Auto-scaling Self-hosted agents on Azure Container Apps with KEDA](#auto-scaling-self-hosted-agents-on-azure-container-apps-with-KEDA)
-
-<br>
 
 ### Auto-scaling Self-hosted agents on **Azure Kubernetes Service** with **KEDA**
 
 <details>
 <summary>Expand for instructions</summary>
-
- <br>
 
 1. Setup **KEDA** into your AKS cluster according to procedure [Deploying KEDA](https://keda.sh/docs/latest/deploy/).
 
@@ -328,8 +300,6 @@ In this section I am going to use KEDA to create Self-hosted scalable Azure DevO
      <img src="./images/aks-auto_scaling-pods-after.png" width="400">
 
 </details>
-
-<br>
 
 ### Auto-scaling Self-hosted agents on **Azure Container Apps** with **KEDA**
 
@@ -373,5 +343,3 @@ In this section I am going to use KEDA to create Self-hosted scalable Azure DevO
      <img src="./images/aks-auto_scaling-pipeline-pending.png" width="400">
 
 </details>
-
-<br>
