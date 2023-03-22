@@ -7,7 +7,7 @@ Self-hosted agents give you more control to install dependent software needed fo
 - [Sign up for Azure Pipelines](#sign-up-for-azure-pipelines)
 - [Create Agent Pools](#create-agent-pools)
 - [Setup Pipeline for Self-hosted agents](#setup-pipeline-for-self-hosted-agents)
-- [Auto-scaling Self-hosted agents using KEDA](#auto-scaling-self-hosted-agents-using-KEDA)
+- [Auto-scaling Self-hosted agents using KEDA](#auto-scaling-self-hosted-agents-using-keda)
 
 Desired architecture where Azure Kubernetes Service is hosting the Azure DevOps Self-hosted agents layer and Azure Kubernetes Service is hosting the infrastructure layer of the target company workload.
 
