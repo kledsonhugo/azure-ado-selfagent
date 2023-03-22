@@ -70,4 +70,4 @@ az deployment group create `
     registryEndpoint=$REGISTRY_ENDPOINT `
     registryUserName=$REGISTRY_ADMIN `
     registrySecret=$REGISTRY_SECRET `
-    registryImage="$REGISTRY_ENDPOINT/adoagent:v1"
+    registryImage="$REGISTRY_ENDPOINT/adoagent:latest"

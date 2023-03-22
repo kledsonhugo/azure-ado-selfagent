@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: azdevops-agent
-        image: ****************.azurecr.io/adoagent:v1
+        image: ****************.azurecr.io/adoagent:latest
         env:
           - name: AZP_URL
             value: https://dev.azure.com/****************

@@ -9,8 +9,6 @@ Self-hosted agents give you more control to install dependent software needed fo
 - [Setup Pipeline for Self-hosted agents](#setup-pipeline-for-self-hosted-agents)
 - [Auto-scaling Self-hosted agents using KEDA](#auto-scaling-self-hosted-agents-using-KEDA)
 
-<br>
-
 Desired architecture where Azure Kubernetes Service is hosting the Azure DevOps Self-hosted agents layer and Azure Kubernetes Service is hosting the infrastructure layer of the target company workload.
 
 <img src="./images/aks-architecture.png" width="600">
@@ -64,7 +62,7 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 5. Deploy and configure Azure Container Registry, in case you don't have one.
 
-   > **Note**: Follow instructions from [Quickstart: Create an Azure container registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal). After this, you can push and pull containers from Azure Container Registry.
+   > **Note**: Follow instructions from [Quickstart: Create an Azure container registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal). After this, ensure you are logged to the Container Registry, and then you can push and pull containers from Azure Container Registry.
 
 6. Create in your machine a work directory of your choice and navigate into it.
 
@@ -79,24 +77,22 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
    docker push [your registry]/adoagent:latest
    ```
 
-9. Download file [``azdevops-apps.yaml``](/ACI/azdevops-apps.yaml) and save it in your work directory.
+9. Download file [``azdevops-apps.yml``](/ACI/azdevops-apps.yml) and save it in your work directory.
 
-   > **Note**: Replace values for vars ```location```, ```name```, ```image```, ```AZP_URL```, ```AZP_TOKEN```, ```AZP_POOL``` and ```'imageRegistryCredentials``` with your proper values.
+   > **Note**: Replace values on file ``azdevops-apps.yml`` with your own values.
 
    | Env Var | Description |
    |----------|---------------|
-   | `AZP_URL` | The URL of the Azure DevOps or Azure DevOps Server instance. |
    | `AZP_TOKEN` | [Personal Access Token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&amp%3Btabs=Windows&tabs=Windows) (PAT) with Agent Pools (read, manage) scope, created by a user who has permission to configure agents, at AZP_URL. |
 
 10. Deploy the ACI container.
 
-    > **Note**: Ensure your Azure Resource Group is created. Replace ``[resource group]`` and ``[your namespace]`` with your own values.
+    > **Note**: Ensure your Azure Resource Group is created. Replace ``[resource group]`` with your own values.
 
     ```console
     az container create \
       --resource-group [your resource group] \
       --file azdevops-apps.yml
-      --namespace [your namespace]
     ```
 
 11. Go to your **Organization settings**, select **Agent pools** and select the related **ACI** agent pool.
@@ -124,7 +120,7 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 5. Deploy and configure Azure Container Registry, in case you don't have one.
 
-   > **Note**: Follow instructions from [Quickstart: Create an Azure container registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal). After this, you can push and pull containers from Azure Container Registry.
+   > **Note**: Follow instructions from [Quickstart: Create an Azure container registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal). After this, ensure you are logged to the Container Registry, and then you can push and pull containers from Azure Container Registry.
 
 6. Create in your machine a work directory of your choice and navigate into it.
 
@@ -143,13 +139,12 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
    > **Note**: Setup the AKS cluster based on your needs. In a public subnet, in a private subnet, etc. There are multiple choices you can select. Ensure you have all requirements satisfied, or just create an AKS cluster based on the [AKS Quickstart guide](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli).
 
-10. Download the manifest [``azdevops-apps.yaml``](/ACI/azdevops-apps.yaml) and save it in your work directory.
+10. Download file [``azdevops-apps.yml``](/AKS/azdevops-apps.yml) and save it in your work directory.
 
-    > **Note**: Replace values for vars ```location```, ```name```, ```image```, ```AZP_URL```, ```AZP_TOKEN```, ```AZP_POOL``` and ```'imageRegistryCredentials``` with your proper values.
+    > **Note**: Replace values on file ``azdevops-apps.yml`` with your own values.
 
     | Env Var | Description |
     |----------|---------------|
-    | `AZP_URL` | The URL of the Azure DevOps or Azure DevOps Server instance. |
     | `AZP_TOKEN` | [Personal Access Token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&amp%3Btabs=Windows&tabs=Windows) (PAT) with Agent Pools (read, manage) scope, created by a user who has permission to configure agents, at AZP_URL. |
 
 11. Connect to your AKS cluster and deploy the manifest.
@@ -164,7 +159,7 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 12. Go to your **Organization settings**, select **Agent pools** and select the related **AKS** agent pool.
 
-13. You should now see your AKS pod instances connected in the **Agents** menu.
+13. You should now see your AKS pod instance connected in the **Agents** menu.
 
     > **Note**: You can run multiple pods as you want. In the picture there are 2 online as example only.
 
@@ -187,7 +182,7 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 5. Deploy and configure Azure Container Registry, in case you don't have one.
 
-   > **Note**: Follow instructions from [Quickstart: Create an Azure container registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal). After this, you can push and pull containers from Azure Container Registry.
+   > **Note**: Follow instructions from [Quickstart: Create an Azure container registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal). After this, ensure you are logged to the Container Registry, and then you can push and pull containers from Azure Container Registry.
 
 6. Create in your machine a work directory of your choice and navigate into it.
 
@@ -308,8 +303,6 @@ In this section I am going to use KEDA to create Self-hosted scalable Azure DevO
 <details>
 <summary>Expand for instructions</summary>
 
- <br>
-
 1. Create in your machine a work directory of your choice and navigate into it.
 
 2. Download files [``azdevops-keda.ps1``](/ACA/azdevops-keda.ps1), [``azdevops-pool.ps1``](/AKS/azdevops-pool.ps1) and [``aca-keda.json``](/ACA/aca-keda.json) to your work directory.
@@ -326,9 +319,7 @@ In this section I am going to use KEDA to create Self-hosted scalable Azure DevO
     > - ``[your Azure organization]``
     > - ``[your Azure DevOps agent pool]``
 
-<br>
-
-4. Deploy your Azure Container Apps instance using **Powershell**.
+4. Deploy your Azure Container Apps instance using Powershell.
 
    ```powershell
    azdevops-keda.ps1
@@ -340,7 +331,7 @@ In this section I am going to use KEDA to create Self-hosted scalable Azure DevO
 
    - Now queue some Azure Pipeline builds and let´s them to be pending.
 
-   - As a result, you see KEDA taking care of multiple pipeline jobs. In my case, as I have only 2 [paralel jobs](https://learn.microsoft.com/en-us/azure/devops/pipelines/licensing/concurrent-jobs?view=azure-devops&tabs=ms-hosted) available, it scaled automatically to 2 pods.
+   - As a result, you see KEDA scaling out the pods to meet the pending jobs. In my case, as I have only 2 [paralel jobs](https://learn.microsoft.com/en-us/azure/devops/pipelines/licensing/concurrent-jobs?view=azure-devops&tabs=ms-hosted) available, it scaled automatically to 2 pods.
 
      <img src="./images/aks-auto_scaling-pipeline-pending.png" width="400">
 
