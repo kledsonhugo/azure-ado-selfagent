@@ -105,7 +105,7 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 </details>
 
-### Self-hosted agents on **Azure Kubernetes Services**
+### Self-hosted agents on **Azure Kubernetes Service**
 
 <details>
 <summary>Expand for instructions</summary>
