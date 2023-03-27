@@ -2,27 +2,27 @@
 #https://docs.microsoft.com/en-us/azure/container-apps/microservices-dapr-azure-resource-manager?tabs=bash#setup
 
 #uncomment for the first time only
-az login
-az upgrade
-az extension add --source "https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl"
-az provider register --namespace Microsoft.Web
+# az login
+# az upgrade
+# az extension add --source "https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl"
+# az provider register --namespace Microsoft.Web
 
 $scriptPath = $PSScriptRoot
 
-$SUBSCRIPTION_ID = "****************"
-$RESOURCE_GROUP = "****************"
+$SUBSCRIPTION_ID = "xxxxxxxxxxxx"
+$RESOURCE_GROUP = "xxxxxxxxxxxx"
 $LOCATION = "brazilsouth"
-$CONTAINERAPPS_ENVIRONMENT = "****************"
-$LOG_ANALYTICS_WORKSPACE = "****************"
-$ORG_NAME = "****************"
+$CONTAINERAPPS_ENVIRONMENT = "xxxxxxxxxxxx"
+$LOG_ANALYTICS_WORKSPACE = "xxxxxxxxxxxx"
+$ORG_NAME = "xxxxxxxxxxxx"
 $AZP_TOKEN = "****************" #for poc reasons use a full scoped PAT, then can use the same PAT for all the resources
-$AZP_POOL = "****************"
+$AZP_POOL = "ACA"
 $AZP_URL = "https://dev.azure.com/$ORG_NAME"
 
 #registry is expected to already exist
-$REGISTRY_ENDPOINT = "****************.azurecr.io"
-$REGISTRY_ADMIN= "****************"
-$REGISTRY_SECRET="****************"
+$REGISTRY_ENDPOINT = "xxxxxxxxxxxx.azurecr.io"
+$REGISTRY_ADMIN= "xxxxxxxxxxxx"
+$REGISTRY_SECRET=""****************""
 
 # uncomment this if you want to override vars with local vars for development
 # you need to add a file 'variables.dev.ps1' to the folder 'container-app'
@@ -32,9 +32,9 @@ $REGISTRY_SECRET="****************"
 az account set --subscription $SUBSCRIPTION_ID
 
 # create resource group
-az group create `
-    --name $RESOURCE_GROUP `
-    --location "$LOCATION"
+# az group create `
+#     --name $RESOURCE_GROUP `
+#     --location "$LOCATION"
 
 # log analytics workspace
 az monitor log-analytics workspace create `

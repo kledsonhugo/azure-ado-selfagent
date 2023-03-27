@@ -1,25 +1,25 @@
 apiVersion: 2019-12-01
-location: westus
-name: adoagent-aci
+location: brazilsouth
+name: aci-ado-self-hosted
 properties:
   containers:
-  - name: adoagent
+  - name: ado-self-hosted
     properties:
-      image: ****************.azurecr.io/adoagent:latest
+      image: xxxxxxxxxxxx.azurecr.io/adoagent:latest
       resources:
         requests:
           cpu: 1
           memoryInGb: 1.5
       environmentVariables:
       - name: AZP_URL
-        value: https://dev.azure.com/****************
+        value: https://dev.azure.com/xxxxxxxxxxxx
       - name: AZP_TOKEN
-        value: ****************
+        value: ***************
       - name: AZP_POOL
-        value: ****************
+        value: ACI
   osType: Linux
   imageRegistryCredentials:
-  - server: ****************.azurecr.io
-    username: ****************
-    password: ****************
+  - server: xxxxxxxxxxxx.azurecr.io
+    username: xxxxxxxxxxxx
+    password: ***************
 type: Microsoft.ContainerInstance/containerGroups

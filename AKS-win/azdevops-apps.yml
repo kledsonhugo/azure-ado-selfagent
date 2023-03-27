@@ -2,39 +2,39 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: adoagent-secret
+  name: adoagent-win-secret
 data:
-  AZP_TOKEN: *************
+  AZP_TOKEN: ***************************************
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: adoagent-deployment
+  name: adoagent-win-deployment
   labels:
-    app: adoagent
+    app: adoagent-win
 spec:
   replicas: 1
   template:
     metadata:
-      name: adoagent-template
+      name: adoagent-win-template
       labels:
-        app: adoagent
+        app: adoagent-win
     spec:
       nodeSelector:
-        "kubernetes.io/os": linux
+        "kubernetes.io/os": windows
       containers:
-      - name: adoagent
-        image: xxxxxxxxxxxxxx.azurecr.io/adoagent:latest
+      - name: adoagent-win
+        image: xxxxxxxxxxxxxx.azurecr.io/adoagent-win:latest
         env:
           - name: AZP_URL
             value: https://dev.azure.com/xxxxxxxxxxxxxx
           - name: AZP_POOL
-            value: AKS
+            value: AKS-win
           - name: AZP_TOKEN
             valueFrom:
               secretKeyRef:
-                name: adoagent-secret
+                name: adoagent-win-secret
                 key: AZP_TOKEN
   selector:
     matchLabels:
-      app: adoagent
+      app: adoagent-win

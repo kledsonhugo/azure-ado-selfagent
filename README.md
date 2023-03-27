@@ -45,6 +45,7 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 - [Self-hosted agents on Azure Container Instances](#self-hosted-agents-on-azure-container-instances)
 - [Self-hosted agents on Azure Kubernetes Service](#self-hosted-agents-on-azure-kubernetes-service)
+- [Self-hosted agents on Azure Kubernetes Service with Windows Node pool](#self-hosted-agents-on-azure-kubernetes-service-with-windows-node-pool)
 - [Self-hosted agents on Azure Container Apps](#self-hosted-agents-on-azure-container-apps)
 
 ### Self-hosted agents on **Azure Container Instances**
@@ -58,7 +59,7 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 3. Select **Add pool**.
 
-4. Select **Self-hosted** for **Pool type**, type the name of your pool (e.g. **ACI-pool**) and select **Create**.
+4. Select **Self-hosted** for **Pool type**, type the name of your pool (e.g. **ACI**) and select **Create**.
 
 5. Deploy and configure Azure Container Registry, in case you don't have one.
 
@@ -68,9 +69,9 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 7. Download files [``Dockerfile``](/adoagent/Dockerfile) and [``start.sh``](/adoagent/start.sh) and save them in your work directory.
 
-8. Build the Azure Devops Self-hosted container based on your needs (tools, frameworks, etc) and push it into tour Container Registry repository.
+8. Build the Azure Devops Self-hosted container and push it into tour Container Registry repository.
 
-   > **Note**: Replace ``[your registry]`` by your Container Registry account and ensure you are logged to the Container registry.
+   > **Note**: Replace ``[your registry]`` by your Container Registry and ensure you are logged to the Container Registry.
 
    ```console
    docker build -t [your registry]/adoagent:latest .
@@ -80,10 +81,6 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 9. Download file [``azdevops-apps.yml``](/ACI/azdevops-apps.yml) and save it in your work directory.
 
    > **Note**: Replace values on file ``azdevops-apps.yml`` with your own values.
-
-   | Env Var | Description |
-   |----------|---------------|
-   | `AZP_TOKEN` | [Personal Access Token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&amp%3Btabs=Windows&tabs=Windows) (PAT) with Agent Pools (read, manage) scope, created by a user who has permission to configure agents, at AZP_URL. |
 
 10. Deploy the ACI container.
 
@@ -101,8 +98,6 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
     > **Note**: You can run multiple ACI container instances using Container Groups. See [Tutorial: Deploy a multi-container group using Docker Compose](https://learn.microsoft.com/en-us/azure/container-instances/tutorial-docker-compose) for details.
 
-    <img src="./images/aci-agent_connected.png" width="400">
-
 </details>
 
 ### Self-hosted agents on **Azure Kubernetes Service**
@@ -116,7 +111,7 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 3. Select **Add pool**.
 
-4. Select **Self-hosted** for **Pool type**, type the name of your pool (e.g. **AKS-pool**) and select **Create**.
+4. Select **Self-hosted** for **Pool type**, type the name of your pool (e.g. **AKS**) and select **Create**.
 
 5. Deploy and configure Azure Container Registry, in case you don't have one.
 
@@ -126,9 +121,9 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 7. Download files [``Dockerfile``](/adoagent/Dockerfile) and [``start.sh``](/adoagent/start.sh) and save them in your work directory.
 
-8. Build the Azure Devops Self-hosted container based on your needs (tools, frameworks, etc) and push it into tour Container Registry repository.
+8. Build the Azure Devops Self-hosted container and push it into your Container Registry.
 
-   > **Note**: Replace ``[your registry]`` by your Container Registry account and ensure you are logged to the Container registry.
+   > **Note**: Replace ``[your registry]`` by your Container Registry account and ensure you are logged to the Container Registry.
 
    ```console
    docker build -t [your registry]/adoagent:latest .
@@ -142,10 +137,6 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 10. Download file [``azdevops-apps.yml``](/AKS/azdevops-apps.yml) and save it in your work directory.
 
     > **Note**: Replace values on file ``azdevops-apps.yml`` with your own values.
-
-    | Env Var | Description |
-    |----------|---------------|
-    | `AZP_TOKEN` | [Personal Access Token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&amp%3Btabs=Windows&tabs=Windows) (PAT) with Agent Pools (read, manage) scope, created by a user who has permission to configure agents, at AZP_URL. |
 
 11. Connect to your AKS cluster and deploy the manifest.
 
@@ -161,9 +152,63 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 13. You should now see your AKS pod instance connected in the **Agents** menu.
 
-    > **Note**: You can run multiple pods as you want. In the picture there are 2 online as example only.
+    > **Note**: You can run multiple pods as you want.
 
-    <img src="./images/aks-agents_connected.png" width="400">
+</details>
+
+### Self-hosted agents on **Azure Kubernetes Service with Windows Node pool**
+
+<details>
+<summary>Expand for instructions</summary>
+
+1. Go to your organization and select **Organization settings**.
+
+2. Select **Agent pools** in the left panel under **Pipelines**.
+
+3. Select **Add pool**.
+
+4. Select **Self-hosted** for **Pool type**, type the name of your pool (e.g. **AKS-win**) and select **Create**.
+
+5. Deploy and configure Azure Container Registry, in case you don't have one.
+
+   > **Note**: Follow instructions from [Quickstart: Create an Azure container registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal). After this, ensure you are logged to the Container Registry, and then you can push and pull containers from Azure Container Registry.
+
+6. Using **Powershell**, create in your machine a work directory of your choice and navigate into it.
+
+7. Download files [``Dockerfile``](/adoagent-win/Dockerfile) and [``start.ps1``](/adoagent-win/start.ps1) and save them in your work directory.
+
+8. Build the Azure Devops Self-hosted Windows container and push it into your Container Registry.
+
+   > **Note**: Replace ``[your registry]`` by your Container Registry account and ensure you are logged to the Container registry.
+
+   > **Note**: Follow **Install Docker for Windows** and **Switch Docker to use Windows containers** on [Run a self-hosted agent in Docker](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/docker?view=azure-devops) as requirements prior to build the Windows container.
+
+   ```Powershell
+   docker build -t [your registry]/adoagent-win:latest .
+   docker push [your registry]/adoagent-win:latest
+   ```
+
+9. Deploy and configure Azure Kubernetes Service (AKS) with Windows Node pool.
+
+   > **Note**: Create an AKS cluster with Windows Node pool. Reference: [Deploy a Windows-based AKS Cluster](https://learn.microsoft.com/en-us/azure/aks/learn/quick-windows-container-deploy-cli).
+
+10. Download file [``azdevops-apps.yml``](/AKS-win/azdevops-apps.yml) and save it in your work directory.
+
+    > **Note**: Replace values on file ``azdevops-apps.yml`` with your own values.
+
+11. Connect to your AKS cluster and deploy the manifest.
+
+    > **Note**: Ensure your Azure Resource Group and AKS namespace are created. Replace ``[your subscription id]``, ``[your resource group]``,  ``[your AKS cluster]`` and ``[your namespace]`` with your own values.
+
+    ```console
+    az account set --subscription [your subscription id]
+    az aks get-credentials --resource-group [your resource group] --name [your AKS cluster]
+    kubectl apply -f azdevops-apps.yml -n [your namespace]
+    ```
+
+12. Go to your **Organization settings**, select **Agent pools** and select the related **AKS-win** agent pool.
+
+13. You should now see your Windows AKS pod instance connected in the **Agents** menu.
 
 </details>
 
@@ -178,7 +223,7 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 3. Select **Add pool**.
 
-4. Select **Self-hosted** for **Pool type**, type the name of your pool (e.g. **ACA-pool**) and select **Create**.
+4. Select **Self-hosted** for **Pool type**, type the name of your pool (e.g. **ACA**) and select **Create**.
 
 5. Deploy and configure Azure Container Registry, in case you don't have one.
 
@@ -188,9 +233,9 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 7. Download files [``Dockerfile``](/adoagent/Dockerfile) and [``start.sh``](/adoagent/start.sh) and save them in your work directory.
 
-8. Build the Azure Devops Self-hosted container based on your needs (tools, frameworks, etc) and push it into tour Container Registry repository.
+8. Build the Azure Devops Self-hosted container and push it into your Container Registry repository.
 
-   > **Note**: Replace ``[your registry]`` by your Container Registry account and ensure you are logged to the Container registry.
+   > **Note**: Replace ``[your registry]`` by your Container Registry and ensure you are logged to the Container Registry.
 
    ```console
    docker build -t [your registry]/adoagent:latest .
@@ -226,9 +271,9 @@ This article describes how to [Create the Azure DevOps Self-hosted Agent](https:
 
 10. Go to your **Organization settings**, select **Agent pools** and select the related **ACA** agent pool.
 
-11. You should now see your Azure Container Apps containers connected in the **Agents** menu, as the example below.
+11. You should now see your Azure Container Apps containers connected in the **Agents** menu.
 
-    > **Note**: You can run multiple pods as you want. In the picture there are 2 online as example only.
+    > **Note**: You can run multiple pods as you want.
 
 </details>
 
@@ -264,10 +309,11 @@ With the addition of Azure Piplines support in [KEDA](https://keda.sh/docs/2.3/s
 
 In this section I am going to use KEDA to create Self-hosted scalable Azure DevOps agents deployed on different container services, like Azure Kubernetes Service (AKS), Azure Container Apps (ACA), etc.
 
-- [Auto-scaling Self-hosted agents on Azure Kubernetes Service with KEDA](#auto-scaling-self-hosted-agents-on-azure-kubernetes-service-with-KEDA)
-- [Auto-scaling Self-hosted agents on Azure Container Apps with KEDA](#auto-scaling-self-hosted-agents-on-azure-container-apps-with-KEDA)
+- [Auto-scaling Self-hosted agents on Azure Kubernetes Service](#auto-scaling-self-hosted-agents-on-azure-kubernetes-service)
+- [Auto-scaling Self-hosted agents on Azure Kubernetes Service with Windows Node pool](#auto-scaling-self-hosted-agents-on-azure-kubernetes-service-with-windows-node-pool)
+- [Auto-scaling Self-hosted agents on Azure Container Apps](#auto-scaling-self-hosted-agents-on-azure-container-apps)
 
-### Auto-scaling Self-hosted agents on **Azure Kubernetes Service** with **KEDA**
+### Auto-scaling Self-hosted agents on **Azure Kubernetes Service**
 
 <details>
 <summary>Expand for instructions</summary>
@@ -298,7 +344,38 @@ In this section I am going to use KEDA to create Self-hosted scalable Azure DevO
 
 </details>
 
-### Auto-scaling Self-hosted agents on **Azure Container Apps** with **KEDA**
+### Auto-scaling Self-hosted agents on **Azure Kubernetes Service** with Windows Node pool 
+
+<details>
+<summary>Expand for instructions</summary>
+
+1. Setup **KEDA** into your AKS Windows cluster according to procedure [Deploying KEDA](https://keda.sh/docs/latest/deploy/).
+
+   > **Note**: [Self-hosted agents on Azure Kubernetes Service with Windows Node pool](#self-hosted-agents-on-azure-kubernetes-service-with-windows-node-pool) is required for the following steps.
+
+2. Download manifest [``azdevops-keda.yml``](/AKS-win/azdevops-keda.yml) and apply it to create the resource **ScaledObject**. It will enable KEDA to scale your Self-hosted Windows agents.
+
+   ```
+   kubectl apply -f azdevops-keda.yml -n [your namespace]
+   ```
+
+3. It's now time to see autoscaling in action.
+
+   - First, check the current pods running in the deployment. In my case I have only one.
+
+     <img src="./images/aks-auto_scaling-pods-before.png" width="400">
+
+   - Now queue some Azure Pipeline builds and let´s them to be pending.
+
+     <img src="./images/aks-auto_scaling-pipeline-pending.png" width="400">
+
+   - As a result, you see KEDA scaling out the pods to meet the pending jobs. In my case, as I have only 2 [paralel jobs](https://learn.microsoft.com/en-us/azure/devops/pipelines/licensing/concurrent-jobs?view=azure-devops&tabs=ms-hosted) available, it scaled automatically to 2 pods.
+
+     <img src="./images/aks-auto_scaling-pods-after.png" width="400">
+
+</details>
+
+### Auto-scaling Self-hosted agents on **Azure Container Apps**
 
 <details>
 <summary>Expand for instructions</summary>
